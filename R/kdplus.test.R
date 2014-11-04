@@ -18,6 +18,7 @@ kdplus.test = function(x)
 {
   if(max(class(x) == "kdenv") < 1) stop("x must be an object from the kd.env function.")
   simfuns <- as.data.frame(attr(x, "simfuns"))
+  simfuns[,1] <- x$obs # replace r with obs kd
   sdkdhat = apply(simfuns, 1, sd) # estimated variance of kdest simulations
   # turn into matrix
   sdmat = matrix(sdkdhat, nrow = nrow(simfuns), ncol = ncol(simfuns))
@@ -25,8 +26,7 @@ kdplus.test = function(x)
   kdplussim = colSums(simfuns/sdmat, na.rm = TRUE)
   # determine proportion of simulated KD+ and observed KD+
   # greater than KD+
-  kdplus = sum(x$obs/sdkdhat, na.rm = TRUE)
-  p = (sum(kdplussim[-1] >= kdplus) + 1)/ncol(simfuns)
+  p = mean(kdplussim >= kdplussim[1])
   print(paste("The p-value for the global test is", round(p, 3)))
-  return(invisible(list(kdplus = kdplus, pvalue = p)))
+  return(invisible(list(kdplus = kdplussim[1], pvalue = p)))
 }
