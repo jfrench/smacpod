@@ -61,8 +61,8 @@ spscan.test = function(x, nsim = 499, case = 2, len = 50, nreport = nsim + 1, ma
   
   Tscan = max(T, na.rm = TRUE)
   maxpos = which(T == Tscan, arr.ind = TRUE)
-  maxloc = coords[maxpos[1],]
-  mlcr  = r[maxpos[2]]
+  maxloc = coords[maxpos[1,1],]
+  mlcr  = r[maxpos[1,2]]
   
   # display results if appropriate
   if(nreport <= nsim) cat(paste("sims completed: "))
