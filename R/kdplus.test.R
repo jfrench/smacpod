@@ -11,8 +11,8 @@
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Diggle, Peter J., and Amanda G. Chetwynd. "Second-order analysis of spatial clustering for inhomogeneous populations." Biometrics (1991): 1155-1163.
 #' @examples 
 #' data(grave)
-#' env = kd.env(grave, nsim = 19)
-#' kdplus.test(env)
+#' kdsim = kdest(grave, nsim = 19)
+#' kdplus.test(kdsim)
 
 kdplus.test = function(x)
 {

@@ -1,11 +1,12 @@
-#' Envelopes for log ratio of spatial densities
+#' Log ratio of spatial densities
 #' 
-#' \code{logrr.env} computes envelopes for the log ratio of spatial density functions.  The numerator in this ratio is related to the "cases" and the denominator to the "controls".
+#' \code{logrr} computes envelopes for the log ratio of spatial density functions.  The numerator in this ratio is related to the "cases" and the denominator to the "controls".
 #' 
 #' @param x Point pattern (object of class "ppp").
 #' @param case The position of the name of the "case" group in levels(x$marks).  The default is 2.
-#' @param nsim The number of simulated data sets from which to construct the envelopes under the random labeling hypothesis.
-#' @param sigma  Standard deviation of isotropic Gaussian smoothing kernel. Either a numerical value, or a function that computes an appropriate value of sigma.
+#' @param nsim The number of simulated data sets from which to construct the envelopes under the random labeling hypothesis.  Default is 0.
+#' @param sigma  Standard deviation of isotropic Gaussian smoothing kernel for cases. Either a numerical value, or a function that computes an appropriate value of sigma.
+#' @param sigmacon Standard deviation of isotropic Gaussian smoothing kernel for controls.  Default is the same as \code{sigma}.
 #' @param weights	Optional weights to be attached to the points. A numeric vector, numeric matrix, or an expression.
 #' @param ... Additional arguments passed to pixellate.ppp and as.mask to determine the pixel resolution, or passed to sigma if it is a function.
 #' @param edge	Logical flag: if TRUE, apply edge correction.
@@ -23,38 +24,53 @@
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kelsall, Julia E., and Peter J. Diggle. "Kernel estimation of relative risk." Bernoulli (1995): 3-16.  Kelsall, Julia E., and Peter J. Diggle. "Non-parametric estimation of spatial variation in relative risk." Statistics in Medicine 14.21-22 (1995): 2335-2342.
 #' @examples 
 #' data(grave)
-#' renv = logrr.env(grave, nsim = 9)
+#' r = logrr(grave)
+#' plot(r)
+#' 
+#' rsim = logrr(grave, nsim = 9)
 
-logrr.env = function(x, case = 2, nsim = 499, sigma = NULL, ..., weights=NULL, edge=TRUE, varcov=NULL, at="pixels", leaveoneout=TRUE, adjust=1, diggle=FALSE, nreport = 50)
+logrr = function(x, case = 2, nsim = 0, sigma = NULL, sigmacon = sigma, ..., weights=NULL, edge=TRUE, varcov=NULL, at="pixels", leaveoneout=TRUE, adjust=1, diggle=FALSE, nreport = 50)
 {
+  if(!is.element("ppp", class(x))) stop("x must be a ppp object")
+  if(is.null(x$marks)) stop("x must be marked as cases or controls")
+  nlev = length(levels(x$marks))
+  if(case < 1 || case > nlev) stop("case must be an integer between 1 and length(levels(x$marks))")
+  if(nsim < 0 | !is.finite(nsim)) stop("nsim must be a non-negative integer")
+  
   cases = which(x$marks == levels(x$marks)[case])
   N1 = length(cases)
-  f = spdensity(x = x[cases,], sigma = sigma, ..., weights = weights,
+  r = spdensity(x = x[cases,], sigma = sigma, ..., weights = weights,
                   edge = edge, varcov = varcov, at = at, leaveoneout = leaveoneout,
                   adjust = adjust, diggle = diggle)
-  g = spdensity(x = x[-cases,], sigma = sigma, ..., weights = weights,
+  g = spdensity(x = x[-cases,], sigma = sigmacon, ..., weights = weights,
                   edge = edge, varcov = varcov, at = at, leaveoneout = leaveoneout,
                   adjust = adjust, diggle = diggle)
-  r = logrr(f, g)
-  simr = array(0, dim = c(r$dim, nsim + 1))
-  simr[,,1] = r$v
-  if(nreport <= nsim) cat("Simulations completed: ")
-  for(i in 1:nsim)
+  r$v = log(r$v) - log(g$v)
+  if(nsim > 0)
   {
-    cases = sample(x$n, N1)
-    fsim = spdensity(x = x[cases,], sigma = sigma, ..., weights = weights,
-                    edge = edge, varcov = varcov, at = at, leaveoneout = leaveoneout,
-                    adjust = adjust, diggle = diggle)
-    gsim = spdensity(x = x[-cases,], sigma = sigma, ..., weights = weights,
-                    edge = edge, varcov = varcov, at = at, leaveoneout = leaveoneout,
-                    adjust = adjust, diggle = diggle)
-    rsim = logrr(fsim, gsim)
-    simr[,,i + 1] = rsim$v
-    if((i %% nreport) == 0){ cat(paste(i,"")); flush.console() }
+    simr = array(0, dim = c(r$dim, nsim + 1))
+    simr[,,1] = r$v
+    if(nreport <= nsim) cat("Simulations completed: ")
+    
+    for(i in 1:nsim)
+    {
+      cases = sample(x$n, N1)
+      fsim = spdensity(x = x[cases,], sigma = sigma, ..., weights = weights,
+                      edge = edge, varcov = varcov, at = at, leaveoneout = leaveoneout,
+                      adjust = adjust, diggle = diggle)
+      gsim = spdensity(x = x[-cases,], sigma = sigmacon, ..., weights = weights,
+                      edge = edge, varcov = varcov, at = at, leaveoneout = leaveoneout,
+                      adjust = adjust, diggle = diggle)
+      #rsim = logrr(fsim, gsim)
+      simr[,,i + 1] = log(fsim$v) - log(gsim$v)
+      if((i %% nreport) == 0){ cat(paste(i,"")); flush.console() }
+    }
+    r$simr = simr
+    class(r) = c(class(r), "renv")
   }
-  r$simr = simr
+  
   r$window = x$window
-  class(r) = c(class(r), "renv")
+ 
   return(r)
 }
 
