@@ -33,18 +33,20 @@ logrr = function(x, case = 2, nsim = 0, sigma = NULL, sigmacon = sigma, ..., wei
 {
   if(!is.element("ppp", class(x))) stop("x must be a ppp object")
   if(is.null(x$marks)) stop("x must be marked as cases or controls")
+  if(!is.factor(x$marks)) stop("The marks(x) must be a factor")
   nlev = length(levels(x$marks))
   if(case < 1 || case > nlev) stop("case must be an integer between 1 and length(levels(x$marks))")
   if(nsim < 0 | !is.finite(nsim)) stop("nsim must be a non-negative integer")
   if(is.null(sigma) && is.null(sigmacon)) sigma = sigmacon = bw.relrisk(x, ...)
 
+  # code from relrisk function for determining sigma
   dotargs <- list(...)
   isbwarg <- names(dotargs) %in% c("method", "nh", "hmin", 
                                    "hmax", "warn")
   bwargs <- dotargs[isbwarg]
   dargs <- dotargs[!isbwarg]
   if (is.null(sigma)) {
-    sigma <- do.call(bw.relrisk, append(list(X), bwargs))
+    sigma <- do.call(bw.relrisk, append(list(x), bwargs))
   }
   if(is.null(sigmacon)) sigmacon <- sigma
   
