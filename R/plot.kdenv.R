@@ -4,7 +4,8 @@
 #' @param ... Additional graphical parameters passed to \code{plot.fv} function.
 #' @param shadecol1 Shade color for max/min envelopes. 
 #' @param shadecol2 Shade color for confidence envelopes.
-#' @importFrom graphics plot
+#' @import spatstat
+#' @importFrom graphics plot polygon
 #' @method plot kdenv
 #' @export
 #' @examples
@@ -16,14 +17,14 @@ plot.kdenv = function(x, ..., shadecol1 = "grey", shadecol2 = "lightblue")
 {
   if(!is.element("kdenv", class(x))) stop("x should be an object from kdest function")
   # if there were no simulations
-  if(length(x) == 1) plot.fv(x[[1]], ...)
+  if(length(x) == 1) spatstat::plot.fv(x[[1]], ...)
   if(length(x) > 1)
   {
     # create main plot
-    plot.fv(x[[1]], legend = FALSE, shadecol = shadecol1, main = "", ...)
+    spatstat::plot.fv(x[[1]], legend = FALSE, shadecol = shadecol1, main = "", ...)
     # shade confidence bands
-    polygon(c(x$r, rev(x$r)), c(x$qhi, rev(x$qlo)), col = shadecol2, border = NA)
+    graphics::polygon(c(x$r, rev(x$r)), c(x$qhi, rev(x$qlo)), col = shadecol2, border = NA)
     # redraw parts of plot covered by confidence bands
-    plot.fv(x[[1]], legend = FALSE, shadecol = NA, add = TRUE, ...)
+    spatstat::plot.fv(x[[1]], legend = FALSE, shadecol = NA, add = TRUE, ...)
   }
 }
