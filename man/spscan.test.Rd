@@ -5,7 +5,7 @@
 \title{Spatial Scan Test}
 \usage{
 spscan.test(x, case = 2, nsim = 499, alpha = 0.1, nreport = nsim + 1,
-  maxd = NULL)
+  maxd = NULL, parallel = TRUE)
 }
 \arguments{
 \item{x}{A \code{ppp} object from the \code{spatstat} package with marks for the case and control groups.}
@@ -19,6 +19,8 @@ spscan.test(x, case = 2, nsim = 499, alpha = 0.1, nreport = nsim + 1,
 \item{nreport}{The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.}
 
 \item{maxd}{The radius of the largest possible cluster to consider.}
+
+\item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel:mclapply function}.  Default is TRUE.}
 }
 \value{
 Returns a list with the following components:
@@ -35,7 +37,7 @@ The test is performed using the random labeling hypothesis.  The windows are cir
 }
 \examples{
 data(grave)
-out = spscan.test(grave)
+out = spscan.test(grave, parallel = FALSE)
 plot(out, main = "")
 # get warning if no significant cluster
 out2 = spscan.test(grave, alpha = 0.01)

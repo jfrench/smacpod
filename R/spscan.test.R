@@ -10,6 +10,7 @@
 #' @param alpha The significance level to determine whether a cluster is signficiant.
 #' @param nreport The frequency with which to report simulation progress.  The default is \code{nsim+ 1}, meaning no progress will be displayed.
 #' @param maxd The radius of the largest possible cluster to consider.
+#' @param parallel A logical indicating whether the test should be parallelized using the \code{parallel:mclapply function}.  Default is TRUE.
 #'
 #' @return Returns a list with the following components: 
 #' \item{coords}{The centroids of the significant clusters.}
@@ -19,18 +20,19 @@
 #' @author Joshua French
 #' @import spatstat
 #' @importFrom SpatialTools dist1
+#' @importFrom parallel mclapply
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Kulldorff, M. (1997) A spatial scan statistic. Communications in Statistics -- Theory and Methods 26, 1481-1496.
 #' @examples 
 #' data(grave)
-#' out = spscan.test(grave)
+#' out = spscan.test(grave, parallel = FALSE)
 #' plot(out, main = "")
 #' # get warning if no significant cluster
 #' out2 = spscan.test(grave, alpha = 0.01)
 
 spscan.test <- 
   function (x, case = 2, nsim = 499, alpha = 0.1, nreport = nsim + 
-              1, maxd = NULL) 
+              1, maxd = NULL, parallel = TRUE) 
   {
     if(!is.element("ppp", class(x))) stop("x must be a ppp object")
     if(is.null(x$marks)) stop("x must be marked as cases or controls")
@@ -56,26 +58,44 @@ spscan.test <-
     # windows related to growing windows around each event location
     # to include the respective nearest neighbors stored in mynn
     Nin = unlist(lapply(mynn, function(x) 1:length(x)), use.names = FALSE)
+   
     Nout = N - Nin
     Tsim = numeric(nsim)
-    for(i in 1:nsim)
-    {
-      # create vector of zeros with 1 in the case positions
-      z = numeric(N)
-      z[sample(1:N, N1)] = 1
-      # for each element of the nn list,
-      # cumulate the number of cases inside the successive window
-      N1in = unlist(lapply(mynn, function(x) cumsum(z[x])), use.names = FALSE)
-      N1out = N1 - N1in
-      Tsim[i] = max((N1in/Nin)^N1in * 
-                      (N1out/Nout)^(N1out) * 
-                      (N1in/Nin > N1out/Nout), na.rm = TRUE)
-      if ((i%%nreport) == 0) cat(paste(i, ""))
-    }
+    
+    # create list with elements containing the cases
+    # under the random labeling hypothesis
+    i_list = as.list(1:nsim)
+    
+    fcall = lapply
+    if(parallel) fcall = parallel::mclapply
+    
+    # set up list of arguments to lapply or mclapply
+    # X is the index (i), needed for counting
+    # FUN determines the maximum spatial scan statistic for that data set
+    fcall_list = list(X = i_list, 
+                  FUN = function(i)
+                  {
+                    # create vector of zeros with 1 in the case positions
+                    z = numeric(N)
+                    z[sample(1:N, N1)] = 1
+                    # for each element of the nn list,
+                    # cumulate the number of cases inside the successive window
+                    N1in = unlist(lapply(mynn, function(x) cumsum(z[x])), use.names = FALSE)
+                    N1out = N1 - N1in
+                    if ((i%%nreport) == 0) cat(paste(i, ""))
+                    # return max scan statistic
+                    return(max((N1in/Nin)^N1in * 
+                          (N1out/Nout)^(N1out) * 
+                          (N1in/Nin > N1out/Nout), na.rm = TRUE))
+                  })
+    
+    # mclapply or lapply to the simulated data sets the FUN in fcall_list
+    # returns max scan statistic for that simulation
+    Tsim = unlist(do.call(fcall, fcall_list), use.names = TRUE)
     
     # number of nns for each observation
     nnn = unlist(lapply(mynn, length), use.names = FALSE)
-    
+
     # factors related to number of neighbors
     # each event location possesses
     fac = rep(1:N, times = nnn)
@@ -98,7 +118,6 @@ spscan.test <-
     Tscan = max(unlist(Tmax_each, use.names = FALSE), na.rm = TRUE)
     # Monte Carlo p-values for statistics of most likely cluster for each observation
     pvalue_each = lapply(Tmax_each, function(x) (sum(Tsim >= x) + 1)/(nsim + 1))
-    
     # determine which potential clusters significant
     sig_clusters = which(pvalue_each <= alpha, useNames = FALSE)
     
@@ -107,13 +126,6 @@ spscan.test <-
     {
       sig_clusters = which.max(Tmax_each)
       warning("No significant clusters.  Returning most likely cluster.")
-    }
-    
-    # if there are no significant clusters, return most likely cluster
-    if(length(sig_clusters) == 0)
-    {
-      sig_clusters = which.max(Tmax_each)
-      print("No significant clusters.  Returning most likely cluster.")
     }
     
     # sort the distances for the significant clusters
@@ -125,8 +137,11 @@ spscan.test <-
     
     # pvalues of significant clsuters, ordered by significance
     sig_p = unlist(pvalue_each, use.names = FALSE)[sig_clusters]
+    # pvalues of significant clsuters, ordered by significance
+    sig_stat = unlist(Tmax_each, use.names = FALSE)[sig_clusters]
+    
     # order of significance
-    o_sig = order(sig_p)
+    o_sig = order(sig_stat)
     sig_p = sig_p[o_sig]
     # radii of signifant clusters, ordered by significance
     sig_r = (sig_sorted_d[sig_r_idx])[o_sig]
@@ -140,6 +155,7 @@ spscan.test <-
     
     out = list(coords = sig_coords[noc, ,drop = FALSE],
                r = sig_r[noc],
+               statistic = sig_stat[noc],
                p = sig_p[noc], 
                ppp = x)
     class(out) = "scan"
