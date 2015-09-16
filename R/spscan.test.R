@@ -2,7 +2,7 @@
 #' 
 #' \code{spscan.test} performs the spatial scan test of Kulldorf (1997).
 #' 
-#' The test is performed using the random labeling hypothesis.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely is returned (along with a warning).
+#' The test is performed using the random labeling hypothesis.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 #' 
 #' @param x A \code{ppp} object from the \code{spatstat} package with marks for the case and control groups.
 #' @param case The position of the name of the "case" group in levels(x$marks).  The default is 2.
