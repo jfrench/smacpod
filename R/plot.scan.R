@@ -15,7 +15,7 @@
 #' @examples
 #' data(grave)
 #' out = spscan.test(grave, case = 2, alpha = 0.1)
-#' plot(out)
+#' plot(out, chars = c(1, 20), main = "most likely cluster")
 plot.scan = function(x, ..., nv = 100, border = NULL, ccol = NULL, clty = NULL, clwd = NULL)
 {
   if(class(x) != "scan") stop("x should be a scan object from spscan.test function")
@@ -39,8 +39,8 @@ plot.scan = function(x, ..., nv = 100, border = NULL, ccol = NULL, clty = NULL, 
   # plot clusters
   for(i in 1:nc)
   {
-    plotrix::draw.circle(x[[i]]$coords[1, 1], x[[i]]$coords[1, 2], x[[i]]$r, 
-                nv = nv, border = border, 
-                col = ccol[i], lty = clty[i], lwd = clwd[i])
+    plotrix::draw.circle(x$clusters[[i]]$coords[1, 1], x$clusters[[i]]$coords[1, 2], 
+                         x$clusters[[i]]$r, nv = nv, border = border, col = ccol[i], 
+                         lty = clty[i], lwd = clwd[i])
   }
 }

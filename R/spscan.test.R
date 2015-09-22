@@ -34,7 +34,7 @@
 #' @examples 
 #' data(grave)
 #' out = spscan.test(grave, parallel = FALSE)
-#' plot(out, main = "")
+#' plot(out, chars = c(1, 20), main = "most likely cluster")
 #' # get warning if no significant cluster
 #' out2 = spscan.test(grave, alpha = 0.01)
 
