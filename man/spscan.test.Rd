@@ -23,17 +23,24 @@ spscan.test(x, case = 2, nsim = 499, alpha = 0.1, nreport = nsim + 1,
 \item{parallel}{A logical indicating whether the test should be parallelized using the \code{parallel:mclapply function}.  Default is TRUE.}
 }
 \value{
-Returns a list with the following components:
-\item{coords}{The centroids of the significant clusters.}
-\item{r}{The radii of the window of the significant clusters.}
-\item{p}{The vector of p-values associated with the significant clusters.}
-\item{ppp}{The original ppp object for which the scan test was performed.}
+Returns a list of length two of class scan. The first element (clusters) is a list containing the significant, non-ovlappering clusters, and has the the following components:
+\item{coords}{The centroid of the significant clusters.}
+\item{r}{The radius of the window of the clusters.}
+\item{pop}{The total population in the cluser window.}
+\item{cases}{The observed number of cases in the cluster window.}
+\item{expected}{The expected number of cases in the cluster window.}
+\item{smr}{Standarized mortaility ratio (observed/expected) in the cluster window.}
+\item{rr}{Relative risk in the cluster window.}
+\item{propcases}{Proportion of cases in the cluster window.}
+\item{loglikrat}{The loglikelihood ratio for the cluster window (i.e., the log of the test statistic).}
+\item{pvalue}{The pvalue of the test statistic associated with the cluster window.}
+The second element of the list is the centroid coordinates.  This is needed for plotting purposes.
 }
 \description{
 \code{spscan.test} performs the spatial scan test of Kulldorf (1997).
 }
 \details{
-The test is performed using the random labeling hypothesis.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely is returned (along with a warning).
+The test is performed using the random labeling hypothesis.  The windows are circular and extend from the observed data locations.  The clusters returned are non-overlapping, ordered from most significant to least significant.  The first cluster is the most likely to be a cluster.  If no significant clusters are found, then the most likely cluster is returned (along with a warning).
 }
 \examples{
 data(grave)
