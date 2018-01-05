@@ -44,6 +44,10 @@ spscan.test <-
   {
     if(!is.element("ppp", class(x))) stop("x must be a ppp object")
     if(is.null(x$marks)) stop("x must be marked as cases or controls")
+    if(!is.factor(x$marks)) {
+      message("converting marks(x) to a factor")
+      x$marks <- factor(x$marks)
+    }
     if(!is.factor(x$marks)) stop("The marks(x) must be a factor")
     nlev = length(levels(x$marks))
     if(case < 1 || case > nlev) stop("case must be an integer between 1 and length(levels(x$marks))")
@@ -65,7 +69,7 @@ spscan.test <-
     # determine the number of events inside the windows for successive
     # windows related to growing windows around each event location
     # to include the respective nearest neighbors stored in mynn
-    Nin = unlist(lapply(mynn, function(x) 1:length(x)), use.names = FALSE)
+    Nin = unlist(lapply(mynn, function(x) seq_along(x)), use.names = FALSE)
     Nout = N - Nin
     # constant used in many places on calculation of log test statistic
     const = (N1 * log(N1) + (N - N1) * log(N - N1) - N * log(N))

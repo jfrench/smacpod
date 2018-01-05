@@ -1,8 +1,8 @@
 Package: smacpod
 Type: Package
 Title: Statistical Methods for the Analysis of Case-Control Point Data
-Version: 1.4.1
-Date: 2015-09-22
+Version: 1.4.2
+Date: 2017-12-22
 Author: Joshua French
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
 Description: Various statistical methods for analyzing case-control point data.
@@ -13,6 +13,7 @@ LazyLoad: yes
 Depends:
     R (>= 3.1.1)
 Imports:
-    spatstat, SpatialTools, plotrix, parallel
+    spatstat, SpatialTools, plotrix, parallel, abind, pbapply
 Suggests: 
     testthat
+RoxygenNote: 6.0.1
