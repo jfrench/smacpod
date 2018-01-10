@@ -23,7 +23,9 @@
 #'   kernel for controls.  Default is the same as 
 #'   \code{sigma}.
 #' @param case The position of the name of the "case" group 
-#'   in levels(x$marks).  The default is 2.
+#'   in \code{levels(x$marks)}.  The default is 2.  
+#'   \code{x$marks} is assumed to be a factor.  Automatic
+#'   conversion is attempted if it is not.
 #' @param nsim The number of simulated data sets from which 
 #'   to construct the tolerance intervals under the random
 #'   labeling hypothesis.  Default is 0 (i.e., no
@@ -133,7 +135,7 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
   cases = which(x$marks == levels(x$marks)[case])
   N1 = length(cases)
   r = spdensity(x = x[cases,], sigma = sigma, ..., 
-                weights = weights[cases, ],
+                weights = weights[cases],
                 edge = edge, varcov = varcov, at = at, 
                 leaveoneout = leaveoneout,
                 adjust = adjust, diggle = diggle,
@@ -141,8 +143,8 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
                 scalekernel = scalekernel,
                 positive = positive, verbose = verbose)
   
-  g = spdensity(x = x[-cases,], sigma = sigmacon, #..., 
-                weights = weights[-cases, ],
+  g = spdensity(x = x[-cases,], sigma = sigmacon, ..., 
+                weights = weights[-cases],
                 edge = edge, varcov = varcov, at = at, 
                 leaveoneout = leaveoneout,
                 adjust = adjust, diggle = diggle,
@@ -155,8 +157,8 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
   if (nsim > 0) {
     simr2 <- pbapply::pblapply(seq_len(nsim), function(i) {
       cases = sample(x$n, N1)
-      fsim = spdensity(x = x[cases,], sigma = sigma, # ..., 
-                       weights = weights[cases, ],
+      fsim = spdensity(x = x[cases,], sigma = sigma, ..., 
+                       weights = weights[cases],
                        edge = edge, varcov = varcov, at = at, 
                        leaveoneout = leaveoneout,
                        adjust = adjust, diggle = diggle,
@@ -164,8 +166,8 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
                        scalekernel = scalekernel,
                        positive = positive, verbose = verbose)
       
-      gsim = spdensity(x = x[-cases,], sigma = sigmacon, # ..., 
-                       weights = weights[-cases, ],
+      gsim = spdensity(x = x[-cases,], sigma = sigmacon, ..., 
+                       weights = weights[-cases],
                        edge = edge, varcov = varcov, at = at, 
                        leaveoneout = leaveoneout,
                        adjust = adjust, diggle = diggle,

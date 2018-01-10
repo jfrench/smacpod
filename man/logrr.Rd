@@ -24,7 +24,9 @@ kernel for controls.  Default is the same as
 \code{sigma}.}
 
 \item{case}{The position of the name of the "case" group 
-in levels(x$marks).  The default is 2.}
+in \code{levels(x$marks)}.  The default is 2.  
+\code{x$marks} is assumed to be a factor.  Automatic
+conversion is attempted if it is not.}
 
 \item{nsim}{The number of simulated data sets from which 
 to construct the tolerance intervals under the random
