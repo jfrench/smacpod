@@ -276,6 +276,6 @@ spscan.test <-
       clusters[[i]]$pvalue = sig_p[i]
     }
     outlist = list(clusters = clusters, ppp = x)
-    class(outlist) = "scan"
+    class(outlist) = "spscan"
     return(outlist)
   }

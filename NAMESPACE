@@ -2,7 +2,7 @@
 
 S3method(plot,kdenv)
 S3method(plot,logrrenv)
-S3method(plot,scan)
+S3method(plot,spscan)
 export(circles.intersect)
 export(circles.plot)
 export(kdest)
