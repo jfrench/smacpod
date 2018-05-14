@@ -90,7 +90,7 @@ spscan.test <-
     N = x$n
     N1 = length(idxcase)
     coords = matrix(c(x$x, x$y), ncol = 2)
-    # d = SpatialTools::dist1(coords)
+
     d = sp::spDists(cbind(x$x, x$y), longlat = longlat)
     
     if (is.null(maxd)) maxd = max(d)/2
@@ -232,7 +232,8 @@ spscan.test <-
     sig_tstat = tmax[usigc]
     sig_p = pvalue[usigc]
     sig_coords = coords[usigc,, drop = FALSE]
-    sig_r = diag(SpatialTools::dist2(sig_coords, coords[max_nn[usigc], , drop = FALSE]))
+    # sig_r = diag(SpatialTools::dist2(sig_coords, coords[max_nn[usigc], , drop = FALSE]))
+    sig_r = sp::spDists(sig_coords, coords[max_nn[usigc], , drop = FALSE], longlat = longlat, diagonal = TRUE)
     sig_popin = (Nin[tmax_idx])[usigc]
     sig_yin = (N1in[tmax_idx])[usigc]
     sig_ein = (N1/N)*sig_popin
