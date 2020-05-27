@@ -42,7 +42,7 @@ plot.kdenv = function(x, ..., shadecol1 = "gray56", shadecol2 = "lightgrey", mai
     # do some additional prep in case xlim is specified, otherwise
     # the polygon will go beyond the desired boundary
     plotargs = list(...)
-    xmax = max(x$r)
+    xmax = max(x$r, na.rm = TRUE)
     if (!is.null(plotargs$xlim)) { xmax = max(plotargs$xlim) }
     pin = which(x$r <= xmax)
     

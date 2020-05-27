@@ -30,6 +30,7 @@
 #' @references Waller, L.A. and Gotway, C.A. (2005). Applied
 #'   Spatial Statistics for Public Health Data. Hoboken, NJ:
 #'   Wiley.
+#' @export
 #' @examples 
 #' data(grave)
 #' kd = kd(grave)

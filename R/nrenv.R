@@ -41,13 +41,13 @@ nrenv = function(object, level = 0.90, alternative = "two.sided") {
   alpha = 1 - level
   alternative = match.arg(alternative, choices = c("two.sided", "lower", "upper"))
   if (alternative == "two.sided")   {
-    tol = apply(object$simr, c(1, 2), quantile, 
+    tol = apply(object$simr, c(1, 2), stats::quantile, 
                 prob = c(alpha/2, 1 - alpha/2), na.rm = TRUE)
   } else if (alternative == "lower") {
-    tol = apply(object$simr, c(1, 2), quantile, 
+    tol = apply(object$simr, c(1, 2), stats::quantile, 
                 prob = c(1 - level, 1), na.rm = TRUE)
   } else {
-    tol = apply(object$simr, c(1, 2), quantile, 
+    tol = apply(object$simr, c(1, 2), stats::quantile, 
                 prob = c(0, level), na.rm = TRUE)
   }
   above = (object$simr[,,1] > tol[2,,]) + 0

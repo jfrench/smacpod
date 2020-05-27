@@ -13,7 +13,6 @@
 #' data(grave)
 #' kdsim = kdest(grave, nsim = 9)
 #' kdplus.test(kdsim)
-
 kdplus.test = function(x) {
   if (max(class(x) == "kdenv") < 1) stop("x must be an object from the kdenv function.")
   simfuns <- as.data.frame(attr(x[[1]], "simfuns"))
@@ -26,6 +25,6 @@ kdplus.test = function(x) {
   # determine proportion of simulated KD+ and observed KD+
   # greater than KD+
   p = mean(kdplussim >= kdplussim[1])
-  print(paste("The p-value for the global test is", round(p, 3)))
+  cat(paste("The p-value for the global test is", round(p, 3)))
   return(invisible(list(kdplus = kdplussim[1], pvalue = p)))
 }

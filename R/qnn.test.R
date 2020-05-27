@@ -96,13 +96,23 @@ qnn.test = function(x, q = 5, nsim = 499, case = 2, longlat = FALSE) {
   for (i in 1:ncol(con)) Tcon[i, ] = Tq[con[2, i], ] - Tq[con[1,i], ]
   
   connames = vector("character", ncol(con))
-  for (i in 1:ncol(con)) connames[i] = paste("T",q[con[2,i]]," - T", q[con[1,i]], sep="")
+  for (i in 1:ncol(con)) {
+    connames[i] = paste("T",q[con[2,i]]," - T", q[con[1,i]], sep = "")
+  }
   pcon = rowMeans(Tcon >= Tcon[, nsim + 1]) #calculate p-values
   
-  return(list(qsum = data.frame(q = q, Tq = Tq[,nsim + 1], pvalue = p), 
-              consum = data.frame(contrast = connames, 
-                                  Tcontrast = Tcon[,nsim + 1], pvaluecon = pcon)))
-  
+  cat("Q nearest neighbors test\n\n")
+  cat("case label: ", levels(x$marks)[case], "\n")
+  cat("control label: ", levels(x$marks)[-case], "\n")
+
+  out = list(qsum = data.frame(q = q, Tq = Tq[,nsim + 1], pvalue = p), 
+       consum = data.frame(contrast = connames, 
+                           Tcontrast = Tcon[,nsim + 1], pvalue = pcon))
+  cat("\nSummary of observed test statistics\n\n")
+  print(out$qsum, row.names = FALSE)
+  cat("\nSummary of observed contrasts between test statistics\n\n")
+  print(out$consum, row.names = FALSE)
+  return(invisible(out))
 }
 
 

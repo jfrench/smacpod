@@ -26,7 +26,6 @@
 #' data(grave)
 #' logrrenv = logrr(grave, nsim = 9)
 #' logrr.test(logrrenv)
-
 logrr.test = function(x) {
   if (max(class(x) == "logrrenv") < 1) {
     stop("x must be an object from the logrr function")
@@ -41,6 +40,6 @@ logrr.test = function(x) {
   }
   islogrr = stats[1]
   p = mean(stats >= islogrr)
-  print(paste("The p-value for the global test is", p))
+  cat(paste("The p-value for the global test is", round(p, 3)))
   return(invisible(list(islogrr = islogrr, pvalue = p)))
 }

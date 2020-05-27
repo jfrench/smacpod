@@ -69,12 +69,12 @@ kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL,
              correction = correction, 
              nlarge = nlarge, domain = domain, 
              var.approx = var.approx, ratio = ratio)
-    out = list(out)
+    out = list(out = out)
   } else {
     #min/max envelope
     out = spatstat::envelope(x, kd, case = case, nsim = nsim, 
                              savefuns = TRUE, 
-                             simulate = expression(rlabel(x, permute = TRUE)), 
+                             simulate = expression(spatstat::rlabel(x, permute = TRUE)), 
                              r = r, rmax = rmax, 
                              breaks = breaks, 
                              correction = correction, 
@@ -86,8 +86,13 @@ kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL,
     simfuns[,1] <- out$obs
     l = apply(simfuns, 1, stats::quantile, prob  = (1 - level)/2)
     u = apply(simfuns, 1, stats::quantile, prob = 1 - (1 - level)/2)
-    out = list(out, r = out$r, qlo = l, qhi = u)
+    out = list(out = out, qlo = l, qhi = u)
   }
+  out$r = out$out$r
+  out$case_label = levels(x$marks)[case]
+  out$control_label = levels(x$marks)[-case]
+  out$nsim = nsim
+  out$level = level
   class(out) = "kdenv"
   return(out)
 }
