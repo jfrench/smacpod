@@ -71,7 +71,6 @@
 #'   of the \code{\link[spatstat]{density.ppp}}) function 
 #'   for consistency with the default behavior of that 
 #'   function)
-#' @import spatstat
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005). Applied
 #'   Spatial Statistics for Public Health Data. Hoboken, NJ:

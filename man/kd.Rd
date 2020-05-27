@@ -8,7 +8,7 @@ kd(
   x,
   case = 2,
   r = NULL,
-  rmax = rmax,
+  rmax = NULL,
   breaks = NULL,
   correction = c("border", "isotropic", "Ripley", "translate"),
   nlarge = 3000,
@@ -91,8 +91,8 @@ the various arguments.
 }
 \examples{
 data(grave)
-# kd = kd(grave)
-# plot(kd)
+kd = kd(grave)
+plot(kd)
 }
 \references{
 Waller, L.A. and Gotway, C.A. (2005). Applied

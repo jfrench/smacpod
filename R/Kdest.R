@@ -33,8 +33,6 @@
 #' @return Returns a \code{kdenv} object.  See documentation
 #'   for \code{spatstat::Kest}.
 #' @author Joshua French
-#' @import spatstat
-#' @importFrom stats quantile
 #' @export
 #' @seealso \code{\link[spatstat]{Kest}},
 #'   \code{\link[spatstat]{eval.fv}}
@@ -47,7 +45,6 @@
 #' plot(kd1, iso ~ r, ylab = "difference", legend = FALSE, main = "")
 #' kd2 = kdest(grave, nsim = 9, level = 0.8)
 #' plot(kd2)
-
 kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL, 
                  rmax = NULL, breaks = NULL, 
                  correction = c("border", "isotropic", "Ripley", "translate"), 

@@ -22,8 +22,6 @@
 #'   automatically be displayed.  Default is \code{FALSE}.  
 #'   See Details for an explanation of the components of 
 #'   the plot.
-#' @import spatstat
-#' @importFrom graphics plot polygon
 #' @method plot kdenv
 #' @seealso \code{\link[spatstat]{plot.fv}}
 #' @export

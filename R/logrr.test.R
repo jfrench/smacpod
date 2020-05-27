@@ -13,7 +13,6 @@
 #'   (\code{islogrr}) and the estimated p-value 
 #'   (\code{pvalue}).
 #' @author Joshua French
-#' @import spatstat
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005). Applied
 #'   Spatial Statistics for Public Health Data. Hoboken, NJ:

@@ -25,9 +25,6 @@
 #'   (contrast), test statistic (Tcon), and p-value
 #'   (pvaluecon) for the test of contrasts.}
 #' @author Joshua French
-#' @import spatstat
-#' @importFrom stats dist
-#' @importFrom utils combn
 #' @export
 #' @references Waller, L.A., and Gotway, C.A. (2005). 
 #' Applied Spatial Statistics for Public Health Data. 
