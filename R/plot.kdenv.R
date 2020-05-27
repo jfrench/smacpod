@@ -1,27 +1,29 @@
 #' Plot a \code{kdenv} object.
-#' 
-#' Plots an object from \code{\link[smacpod]{kdest}} of 
+#'
+#' Plots an object from \code{\link[smacpod]{kdest}} of
 #' class \code{kdenv}.
-#' 
-#' The solid line indicates the observed difference in the 
-#' K functions for the cases and controls.  The dashed line 
-#' indicates the average difference in the K functions 
-#' produced from the data sets
-#' simulated under the random labeling hypothesis when 
-#' executing the \code{kdest} function.
-#' 
-#' @param x An object of class \code{kdenv} produced by 
+#'
+#' The solid line indicates the observed difference in the K
+#' functions for the cases and controls.  The dashed line
+#' indicates the average difference in the K functions
+#' produced from the data sets simulated under the random
+#' labeling hypothesis when executing the \code{kdest}
+#' function.
+#'
+#' @param x An object of class \code{kdenv} produced by
 #'   \code{\link[smacpod]{kdest}}.
 #' @param ... Additional graphical parameters passed to the
 #'   \code{\link[spatstat]{plot.fv}} function, which is used
 #'   internally for plotting.
-#' @param shadecol1 Shade color for max/min envelopes.  Default is a dark grey.
-#' @param shadecol2 Shade color for non-rejection envelopes.  Default is "lightgrey".
+#' @param shadecol1 Shade color for max/min envelopes.
+#'   Default is a dark grey.
+#' @param shadecol2 Shade color for non-rejection envelopes.
+#'   Default is "lightgrey".
 #' @param main A main title for the plot.  Default is blank.
 #' @param legend Logical for whether a legend should
-#'   automatically be displayed.  Default is \code{FALSE}.  
-#'   See Details for an explanation of the components of 
-#'   the plot.
+#'   automatically be displayed.  Default is \code{FALSE}.
+#'   See Details for an explanation of the components of the
+#'   plot.
 #' @method plot kdenv
 #' @seealso \code{\link[spatstat]{plot.fv}}
 #' @export
@@ -30,7 +32,6 @@
 #' kd1 = kdest(grave, nsim = 19, level = 0.9)
 #' plot(kd1)
 #' plot(kd1, legend = TRUE)
-
 plot.kdenv = function(x, ..., shadecol1 = "gray56", shadecol2 = "lightgrey", main = "", legend = FALSE) {
   if (!is.element("kdenv", class(x))) stop("x should be an object from kdest function")
   # if there were no simulations

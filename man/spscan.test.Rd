@@ -42,8 +42,8 @@ or an integer to indicate number of child-processes
 
 \item{longlat}{A logical value indicating whether
 Euclidean distance (\code{FALSE}) or Great Circle
-(WGS84 ellipsoid, \code{FALSE}) should be used. 
-Default is \code{FALSE}, i.e., Euclidean distance.}
+(WGS84 ellipsoid, \code{FALSE}) should be used. Default
+is \code{FALSE}, i.e., Euclidean distance.}
 }
 \value{
 Returns a list of length two of class 

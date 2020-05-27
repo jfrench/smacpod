@@ -1,15 +1,26 @@
 #' Global test of clustering using difference in K functions
-#' 
-#' \code{kdplus.test} performs a global test of clustering for comparing cases and controls using the method of Diggle and Chetwynd (1991).  It relies on the difference in estimated K functions.
-#' 
-#' @param x A \code{kdenv} object from the \code{kdest} function.  
-#' 
-#' @return A list providing the observed test statistic (\code{kdplus}) and the estimate p-value {\code{pvalue}}.
+#'
+#' \code{kdplus.test} performs a global test of clustering
+#' for comparing cases and controls using the method of
+#' Diggle and Chetwynd (1991).  It relies on the difference
+#' in estimated K functions.
+#'
+#' @param x A \code{kdenv} object from the \code{kdest}
+#'   function.
+#'
+#' @return A list providing the observed test statistic
+#'   (\code{kdplus}) and the estimate p-value
+#'   {\code{pvalue}}.
 #' @author Joshua French
 #' @seealso \code{\link{kdest}}
 #' @export
-#' @references Waller, L.A. and Gotway, C.A. (2005).  Applied Spatial Statistics for Public Health Data.  Hoboken, NJ: Wiley.  Diggle, Peter J., and Amanda G. Chetwynd. "Second-order analysis of spatial clustering for inhomogeneous populations." Biometrics (1991): 1155-1163.
-#' @examples 
+#' @references Waller, L.A. and Gotway, C.A. (2005).
+#'   Applied Spatial Statistics for Public Health Data.
+#'   Hoboken, NJ: Wiley.  Diggle, Peter J., and Amanda G.
+#'   Chetwynd. "Second-order analysis of spatial clustering
+#'   for inhomogeneous populations." Biometrics (1991):
+#'   1155-1163.
+#' @examples
 #' data(grave)
 #' kdsim = kdest(grave, nsim = 9)
 #' kdplus.test(kdsim)
