@@ -4,9 +4,18 @@
 \alias{kd}
 \title{Difference of estimated K functions}
 \usage{
-kd(x, case = 2, r = NULL, rmax = rmax, breaks = NULL,
+kd(
+  x,
+  case = 2,
+  r = NULL,
+  rmax = rmax,
+  breaks = NULL,
   correction = c("border", "isotropic", "Ripley", "translate"),
-  nlarge = 3000, domain = NULL, var.approx = FALSE, ratio = FALSE)
+  nlarge = 3000,
+  domain = NULL,
+  var.approx = FALSE,
+  ratio = FALSE
+)
 }
 \arguments{
 \item{x}{A \code{ppp} object from the \code{spatstat} 

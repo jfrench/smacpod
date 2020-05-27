@@ -16,7 +16,7 @@
 #'   \code{\link[spatstat]{plot.fv}} function, which is used
 #'   internally for plotting.
 #' @param shadecol1 Shade color for max/min envelopes.  Default is a dark grey.
-#' @param shadecol2 Shade color for tolerance envelopes.  Default is "lightgrey".
+#' @param shadecol2 Shade color for non-rejection envelopes.  Default is "lightgrey".
 #' @param main A main title for the plot.  Default is blank.
 #' @param legend Logical for whether a legend should
 #'   automatically be displayed.  Default is \code{FALSE}.  

@@ -1,7 +1,7 @@
 #' Difference of estimated K functions
 #' 
 #' \code{kdest} determines the difference in estimated K
-#' functions for a set of cases and controls.  Tolerance
+#' functions for a set of cases and controls.  Non-rejection
 #' envelopes can also be produced.
 #' 
 #' This function relies internally on the 
@@ -12,7 +12,7 @@
 #' and the user is referred there for more details about
 #' the various arguments.
 #' 
-#' @param x A \code{ppp} object from the \code{spatstat}
+#' @param x A \code{\link[spatstat]{ppp}} object 
 #'   package with marks for the case and control groups.
 #' @param case The position of the name of the "case" group 
 #'   in \code{levels(x$marks)}.  The default is 2. 
@@ -22,8 +22,8 @@
 #'   difference in estimated K functions will be calculated
 #'   for \code{nsim} data sets generated under the random
 #'   labeling hypothesis.  These will be used to construct
-#'   the tolerance envelopes.
-#' @param level Level of tolerance envelopes. 
+#'   the non-rejection envelopes.
+#' @param level The level used for the non-rejection envelopes. 
 #'   Ignored if \code{nsim} is 0.
 #' @param domain Optional. Calculations will be restricted
 #'   to this subset of the window. See Details of

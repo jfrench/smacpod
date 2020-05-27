@@ -4,8 +4,14 @@
 \alias{plot.kdenv}
 \title{Plot a \code{kdenv} object.}
 \usage{
-\method{plot}{kdenv}(x, ..., shadecol1 = "gray56", shadecol2 = "lightgrey",
-  main = "", legend = FALSE)
+\method{plot}{kdenv}(
+  x,
+  ...,
+  shadecol1 = "gray56",
+  shadecol2 = "lightgrey",
+  main = "",
+  legend = FALSE
+)
 }
 \arguments{
 \item{x}{An object of class \code{kdenv} produced by 
@@ -17,7 +23,7 @@ internally for plotting.}
 
 \item{shadecol1}{Shade color for max/min envelopes.  Default is a dark grey.}
 
-\item{shadecol2}{Shade color for tolerance envelopes.  Default is "lightgrey".}
+\item{shadecol2}{Shade color for non-rejection envelopes.  Default is "lightgrey".}
 
 \item{main}{A main title for the plot.  Default is blank.}
 
