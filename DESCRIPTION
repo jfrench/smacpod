@@ -1,7 +1,7 @@
 Package: smacpod
 Type: Package
 Title: Statistical Methods for the Analysis of Case-Control Point Data
-Version: 2.0.5
+Version: 2.0.6
 Author: Joshua French
 Maintainer: Joshua French <joshua.french@ucdenver.edu>
 Description: Statistical methods for analyzing case-control point data.  Methods include the ratio of kernel densities, the difference in K Functions, the spatial scan statistic, and q nearest neighbors of cases.
