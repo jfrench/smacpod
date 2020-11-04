@@ -34,7 +34,7 @@ a cluster is signficiant.  Default is 0.1.}
 consider.  Default is \code{NULL}, i.e., no limit.}
 
 \item{cl}{
-A cluster object created by \code{\link[parallel]{makeCluster}},
+A cluster object created by \code{\link{makeCluster}},
 or an integer to indicate number of child-processes
 (integer values are ignored on Windows) for parallel evaluations
 (see Details on performance).
