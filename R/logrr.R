@@ -131,9 +131,10 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
   }
   if (is.null(sigmacon)) sigmacon = sigma # determine sigmacon, if NULL
   
+  message(paste("Using factor level", levels(x$marks)[case], "as the case level"))
   cases = which(x$marks == levels(x$marks)[case])
   N1 = length(cases)
-  r = spdensity(x = x[cases,], sigma = sigma, ..., 
+  r = spdensity(x = x[cases,], sigma = sigma, #..., 
                 weights = weights[cases],
                 edge = edge, varcov = varcov, at = at, 
                 leaveoneout = leaveoneout,
