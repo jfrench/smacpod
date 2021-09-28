@@ -14,8 +14,11 @@ and control groups.}
 values of \code{q} for which to do the q nearest
 neighbors test.}
 
-\item{case}{The position of the name of the "case" group
-in levels(x$marks).  The default is 2.}
+\item{case}{The position of the name of the "case" group 
+in \code{levels(x$marks)}.  The default is 2.  
+\code{x$marks} is assumed to be a factor.  Automatic
+conversion is attempted if it is not. Alternatively, you can select the
+name of the desired case group.}
 
 \item{nsim}{The number of simulations from which to
 compute p-value.}
@@ -40,7 +43,7 @@ point patterns under the random labeling hypothesis.
 }
 \examples{
 data(grave)
-qnn.test(grave, q = c(3, 5, 7, 9, 11, 13, 15))
+qnn.test(grave, case = "affected", q = c(3, 5, 7, 9, 11, 13, 15))
 }
 \references{
 Waller, L.A., and Gotway, C.A. (2005).

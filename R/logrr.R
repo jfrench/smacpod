@@ -25,7 +25,8 @@
 #' @param case The position of the name of the "case" group 
 #'   in \code{levels(x$marks)}.  The default is 2.  
 #'   \code{x$marks} is assumed to be a factor.  Automatic
-#'   conversion is attempted if it is not.
+#'   conversion is attempted if it is not. Alternatively, you can select the
+#'   name of the desired case group.
 #' @param nsim The number of simulated data sets from which 
 #'   to construct the non-rejection envelopes under the random
 #'   labeling hypothesis.  Default is 0 (i.e., no
@@ -84,9 +85,9 @@
 #'   Statistics in Medicine 14.21-22 (1995): 2335-2342.
 #' @examples 
 #' data(grave)
-#' r = logrr(grave)
+#' r = logrr(grave, case = "affected")
 #' plot(r)
-#' r2 = logrr(grave, sigma = spatstat.core::bw.scott)
+#' r2 = logrr(grave, case = 2, sigma = spatstat.core::bw.scott)
 #' plot(r2)
 #' rsim = logrr(grave, nsim = 9)
 #' plot(rsim)

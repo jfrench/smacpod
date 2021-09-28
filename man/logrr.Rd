@@ -43,7 +43,8 @@ kernel for controls.  Default is the same as
 \item{case}{The position of the name of the "case" group 
 in \code{levels(x$marks)}.  The default is 2.  
 \code{x$marks} is assumed to be a factor.  Automatic
-conversion is attempted if it is not.}
+conversion is attempted if it is not. Alternatively, you can select the
+name of the desired case group.}
 
 \item{nsim}{The number of simulated data sets from which 
 to construct the non-rejection envelopes under the random
@@ -183,9 +184,9 @@ The \code{two.sided} alternative test assesses
 }
 \examples{
 data(grave)
-r = logrr(grave)
+r = logrr(grave, case = "affected")
 plot(r)
-r2 = logrr(grave, sigma = spatstat.core::bw.scott)
+r2 = logrr(grave, case = 2, sigma = spatstat.core::bw.scott)
 plot(r2)
 rsim = logrr(grave, nsim = 9)
 plot(rsim)

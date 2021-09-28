@@ -14,8 +14,6 @@
 #' 
 #' @param x A \code{\link[spatstat.geom]{ppp}} object 
 #'   package with marks for the case and control groups.
-#' @param case The position of the name of the "case" group 
-#'   in \code{levels(x$marks)}.  The default is 2. 
 #'   \code{x$marks} is assumed to be a factor.  Automatic 
 #'   conversion is attempted if it is not.
 #' @param nsim An non-negative integer.  Default is 0.  The
@@ -28,6 +26,7 @@
 #' @param domain Optional. Calculations will be restricted
 #'   to this subset of the window. See Details of
 #'   \code{\link[spatstat.core]{Kest}}.
+#' @inheritParams logrr   
 #' @inheritParams spatstat.core::Kest
 #'   
 #' @return Returns a \code{kdenv} object.  See documentation
@@ -41,9 +40,9 @@
 #'   Hoboken, NJ: Wiley.
 #' @examples 
 #' data(grave)
-#' kd1 = kdest(grave)
+#' kd1 = kdest(grave, case = "affected")
 #' plot(kd1, iso ~ r, ylab = "difference", legend = FALSE, main = "")
-#' kd2 = kdest(grave, nsim = 9, level = 0.8)
+#' kd2 = kdest(grave, case = 2, nsim = 9, level = 0.8)
 #' plot(kd2)
 kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL, 
                  rmax = NULL, breaks = NULL, 
@@ -51,7 +50,7 @@ kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL,
                  nlarge = 3000, domain = NULL, 
                  var.approx = FALSE, ratio = FALSE) {
   x = arg_check_ppp_marks(x)
-  cases = arg_check_case(case, x)
+  case = arg_check_case(case, x)
   arg_check_nsim(nsim)
   arg_check_level(level)
 

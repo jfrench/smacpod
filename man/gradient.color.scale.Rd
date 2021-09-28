@@ -53,9 +53,9 @@ Create gradient color scale with midpoint
 }
 \examples{
 data(grave)
-rsim = logrr(grave, nsim = 9)
-grad = gradient.color.scale(min(rsim$v, na.rm = TRUE), max(rsim$v, na.rm = TRUE))
-plot(rsim, col = grad$col, breaks = grad$breaks)
+lr = logrr(grave)
+grad = gradient.color.scale(min(lr$v, na.rm = TRUE), max(lr$v, na.rm = TRUE))
+plot(lr, col = grad$col, breaks = grad$breaks)
 }
 \references{
 Based on code from https://stackoverflow.com/a/10986203/5931362

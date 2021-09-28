@@ -21,12 +21,15 @@ kdest(
 }
 \arguments{
 \item{x}{A \code{\link[spatstat.geom]{ppp}} object 
-package with marks for the case and control groups.}
-
-\item{case}{The position of the name of the "case" group 
-in \code{levels(x$marks)}.  The default is 2. 
+package with marks for the case and control groups.
 \code{x$marks} is assumed to be a factor.  Automatic 
 conversion is attempted if it is not.}
+
+\item{case}{The position of the name of the "case" group 
+in \code{levels(x$marks)}.  The default is 2.  
+\code{x$marks} is assumed to be a factor.  Automatic
+conversion is attempted if it is not. Alternatively, you can select the
+name of the desired case group.}
 
 \item{nsim}{An non-negative integer.  Default is 0.  The
 difference in estimated K functions will be calculated
@@ -103,9 +106,9 @@ the various arguments.
 }
 \examples{
 data(grave)
-kd1 = kdest(grave)
+kd1 = kdest(grave, case = "affected")
 plot(kd1, iso ~ r, ylab = "difference", legend = FALSE, main = "")
-kd2 = kdest(grave, nsim = 9, level = 0.8)
+kd2 = kdest(grave, case = 2, nsim = 9, level = 0.8)
 plot(kd2)
 }
 \references{
