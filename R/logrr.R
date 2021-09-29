@@ -181,6 +181,8 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
     
     r$simr = simr2
     r$nrenv = nrenv(r, level = level, alternative = alternative)
+    r$case_label = levels(x$marks)[case]
+    r$control_label = levels(x$marks)[-case]
     class(r) = c("logrrenv", class(r))
   }
   
