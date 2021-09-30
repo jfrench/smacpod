@@ -21,7 +21,7 @@
 #' @export
 #' @examples
 #' data(grave)
-#' out = spscan.test(grave, nsim = 99)
+#' out = spscan.test(grave, nsim = 99, alpha = 0.8)
 #' summary(out)
 summary.spscan = function(object, ...,
                           idx = seq_along(object$clusters),
@@ -47,9 +47,9 @@ summary.spscan = function(object, ...,
   rr = base::round(smerc::sget(object$clusters[idx], "rr"),
                    digits = digits)
   stat = base::round(smerc::sget(object$clusters[idx], "loglikrat"),
-                     digits = 1)
+                     digits = digits)
   p = base::round(smerc::sget(object$clusters[idx], "pvalue"),
-                     digits = 1)
+                     digits = 3)
   data.frame(centroid_x,
              centroid_y,
              radius,
@@ -59,6 +59,6 @@ summary.spscan = function(object, ...,
              rr,
              stat,
              p,
-             row.names = ""
+             row.names = NULL
   )
 }
