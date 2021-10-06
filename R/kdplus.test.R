@@ -64,9 +64,9 @@ print.kdplus_test = function(x, ...) {
   cat("case label: ", x$case_label, "\n")
   cat("control label: ", x$control_label, "\n")
   cat("\n")
-  cat("null hypothesis: KD(r) = 0 for all r between", x$rlims[1], "and", x$rlims[2], "\n")
-  cat("alternative hypothesis: KD(r) > 0 for at least one r between a",
-      x$rlims[1], "and", x$rlims[2], "\n")
+  cat("null hypothesis: KD(r) = 0 for all r between", x$rlim[1], "and", x$rlim[2], "\n")
+  cat("alternative hypothesis: KD(r) > 0 for at least one r between",
+      x$rlim[1], "and", x$rlim[2], "\n")
   cat("test statistic:", x$statistic,"\n")
   cat("p-value:", x$pvalue, "\n")
   cat("nsim:", x$nsim,"\n")
