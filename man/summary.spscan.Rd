@@ -33,6 +33,6 @@ Summarize object of class \code{scan} from \code{\link{spscan.test}}.
 }
 \examples{
 data(grave)
-out = spscan.test(grave, nsim = 99)
+out = spscan.test(grave, nsim = 99, alpha = 0.8)
 summary(out)
 }

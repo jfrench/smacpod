@@ -84,6 +84,7 @@ kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL,
   out$control_label = levels(x$marks)[-case]
   out$nsim = nsim
   out$level = level
+  out$rlim = range(out$r)
   class(out) = "kdenv"
   return(out)
 }
