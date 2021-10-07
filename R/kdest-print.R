@@ -17,8 +17,11 @@ print.kdenv = function(x, ..., extra = FALSE) {
   cat("Difference in K functions\n")
   cat("case label: ", x$case_label, "\n")
   cat("control label: ", x$control_label, "\n")
+  cat("KD(r) computed for r betwen ",
+      x$rlim[1], "and", x$rlim[2], "\n")
   if (x$nsim > 0) {
     cat("number of simulations: ", x$nsim, "\n")
+    cat("simulation procedure: random labeling\n")
     cat("level: ", x$level, "\n")
   }
   if (extra) {
