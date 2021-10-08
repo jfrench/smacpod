@@ -7,7 +7,7 @@
 \method{print}{kdenv_summary}(x, ...)
 }
 \arguments{
-\item{x}{An object produced by the \code{\link[smacpod]{summary.kdest}} function.}
+\item{x}{An object produced by \code{\link[smacpod]{summary.kdenv}}.}
 
 \item{...}{Not currently implemented.}
 }

@@ -5,10 +5,9 @@
 #' ln(f(s)/g(s))}. The numerator, \code{f(s)}, is the spatial density of the
 #' case group. The denominator, \code{g(s)}, is the spatial density of the
 #' control group. If \code{nsim > 0}, then pointwise (at each pixel) tolerance
-#' envelopes are estimated under the random labeling hypothesis. The
-#' tolerance envelopes can be used to assess pixels where the cases are
-#' clustered relative to the controls under the random labeling hypothesis, or
-#' vice versa.
+#' envelopes are estimated under the random labeling hypothesis. The tolerance
+#' envelopes can be used to assess pixels where the log relative risk differs
+#' significantly from zero. See Details.
 #'
 #' If \code{nsim=0}, the \code{plot} function creates a heat map of the log
 #' relative risk. If \code{nsim > 0}, the \code{plot} function colors the pixels
@@ -16,8 +15,11 @@
 #' created under the random labeling hypothesis (i.e., pixels with potential
 #' clustering of cases or controls). Colored regions with values above 0
 #' indicate a cluster of cases relative to controls (without controlling for
-#' multiple comparisons). Colored regions with values below 0 indicate a cluster
-#' of controls relative to cases (without controls for multiple comparisons).
+#' multiple comparisons), i.e., a region where the the density of the cases is
+#' greater than the the density of the controls. Colored regions with values
+#' below 0 indicate a cluster of controls relative to cases (without controlling
+#' for multiple comparisons), i.e., a region where the density of the controls
+#' is greater than the density of the cases.
 #'
 #' The \code{two.sided} alternative test constructs two-sided tolerance
 #' envelopes to assess whether the estimated \code{r(s)} deviates more than what
@@ -33,7 +35,7 @@
 #' If the estimated density of the case or control group becomes too small, this
 #' function may produce warnings due to numerical underflow. Increasing the
 #' bandwidth (\code{sigma}) may help.
-#'
+#' 
 #' @param x A \code{\link[spatstat.geom]{ppp}} object 
 #'   package with marks for the case and control groups.
 #'   \code{x$marks} is assumed to be a factor.  Automatic 

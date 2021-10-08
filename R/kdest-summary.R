@@ -12,7 +12,7 @@
 #'   the vector of distances.
 #' @author Joshua French
 #' @export
-summary.kdenv = function(object, ..., extra = FALSE) {
+summary.kdenv = function(object, ...) {
   # idx of KD(r) > upper limit
   idx_hi = which(object$out$obs > object$qhi)
   # split into ranges of consecutive indices
@@ -27,7 +27,7 @@ summary.kdenv = function(object, ..., extra = FALSE) {
 
 #' Print a \code{kdenv_summary} object
 #'
-#' @param x An object produced by the \code{\link[smacpod]{summary.kdest}} function.
+#' @param x An object produced by \code{\link[smacpod]{summary.kdenv}}.
 #' @param ... Not currently implemented.
 #' @return Print summary
 #' @author Joshua French

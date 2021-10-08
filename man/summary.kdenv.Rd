@@ -4,7 +4,7 @@
 \alias{summary.kdenv}
 \title{Summarize a \code{kdenv} object}
 \usage{
-\method{summary}{kdenv}(object, ..., extra = FALSE)
+\method{summary}{kdenv}(object, ...)
 }
 \arguments{
 \item{object}{An object produced by the \code{\link[smacpod]{kdest}}

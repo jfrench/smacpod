@@ -90,10 +90,15 @@ Returns a \code{kdenv} object.  See documentation
 }
 \description{
 \code{kdest} computes the difference in estimated K functions for a set of
-cases and controls, with, \code{KD(r) = K_case(r) - K_control(r)} denoting
-the estimated difference at distance \code{r}.
-If \code{nsim > 0}, then pointwise tolerance envelopes for \code{KD(r)}
-are constructed under the random labeling hypothesis for each distance \code{r}.
+cases and controls, with \code{KD(r) = K_case(r) - K_control(r)} denoting the
+estimated difference at distance \code{r}. If \code{nsim > 0}, then pointwise
+tolerance envelopes for \code{KD(r)} are constructed under the random
+labeling hypothesis for each distance \code{r}. The \code{summary} function
+can be used to determine the distances for which \code{KD(r)} is above or
+below the tolerance envelopes. The \code{plot} function will plot
+\code{KD(r)} versus r, along with the tolerance envelopes, the min/max
+envelopes of \code{KD(r)} simulated under the random labeling hypothesis, and
+the average KD(r) under the random labeling hypothesis.
 }
 \details{
 This function relies internally on the \code{\link[spatstat.core]{Kest}} and
@@ -104,12 +109,17 @@ for more details about the various arguments.
 }
 \examples{
 data(grave)
+# estimate and plot KD(r)
 kd1 = kdest(grave, case = "affected")
 plot(kd1, iso ~ r, ylab = "difference", legend = FALSE, main = "")
 kd2 = kdest(grave, case = 2, nsim = 9, level = 0.8)
 kd2 # print object
 summary(kd2) # summarize distances KD(r) outside envelopes
 plot(kd2)
+# manually add legend
+legend("bottomright", legend = c("obs", "avg", "max/min env", "95\% env"),
+       lty = c(1, 2, 1, 2), col = c("black", "red", "darkgrey", "lightgrey"),
+       lwd = c(1, 1, 10, 10))
 }
 \references{
 Waller, L.A. and Gotway, C.A. (2005). 

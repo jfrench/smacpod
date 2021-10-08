@@ -1,14 +1,15 @@
 #' Difference of estimated K functions
 #'
 #' \code{kdest} computes the difference in estimated K functions for a set of
-#' cases and controls, with \code{KD(r) = K_case(r) - K_control(r)} denoting
-#' the estimated difference at distance \code{r}.
-#' If \code{nsim > 0}, then pointwise tolerance envelopes for \code{KD(r)}
-#' are constructed under the random labeling hypothesis for each distance \code{r}.
-#' The \code{summary} function can be used to determine where \code{KD(r)} is 
-#' above or below tolerance envelopes. The \code{plot} function will plot
-#' \code{KD(r)} versus r, along with the tolerance envelopes, the min/max envelopes
-#' of \code{KD(r)} simulated under the random labeling hypothesis, and the average
+#' cases and controls, with \code{KD(r) = K_case(r) - K_control(r)} denoting the
+#' estimated difference at distance \code{r}. If \code{nsim > 0}, then pointwise
+#' tolerance envelopes for \code{KD(r)} are constructed under the random
+#' labeling hypothesis for each distance \code{r}. The \code{summary} function
+#' can be used to determine the distances for which \code{KD(r)} is above or
+#' below the tolerance envelopes. The \code{plot} function will plot
+#' \code{KD(r)} versus r, along with the tolerance envelopes, the min/max
+#' envelopes of \code{KD(r)} simulated under the random labeling hypothesis, and
+#' the average KD(r) under the random labeling hypothesis.
 #'
 #' This function relies internally on the \code{\link[spatstat.core]{Kest}} and
 #' \code{\link[spatstat.core]{eval.fv}} functions from the \code{spatstat}
