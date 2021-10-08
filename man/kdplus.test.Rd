@@ -23,8 +23,9 @@ in estimated K functions.
 }
 \examples{
 data(grave)
-kdsim = kdest(grave, nsim = 9)
-kdplus.test(kdsim)
+# construct envelopes for differences in estimated K functions
+kdenv = kdest(grave, nsim = 9)
+kdplus.test(kdenv)
 }
 \references{
 Waller, L.A. and Gotway, C.A. (2005).

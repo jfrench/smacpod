@@ -22,8 +22,9 @@
 #'   1155-1163.
 #' @examples
 #' data(grave)
-#' kdsim = kdest(grave, nsim = 9)
-#' kdplus.test(kdsim)
+#' # construct envelopes for differences in estimated K functions
+#' kdenv = kdest(grave, nsim = 9)
+#' kdplus.test(kdenv)
 kdplus.test = function(x) {
   if (max(class(x) == "kdenv") < 1) stop("x must be an object from the kdenv function.")
   simfuns <- as.data.frame(attr(x[[1]], "simfuns"))
@@ -60,7 +61,7 @@ print.kdplus_test = function(x, ...) {
   cat("\n")
   cat("Diggle and Chetwynd (1991) test for difference in K functions\n")
   cat("\n")
-  cat("KD(r) = K_cases(r) - K_controls(r)\n")
+  cat("KD(r) = K_case(r) - K_control(r)\n")
   cat("case label: ", x$case_label, "\n")
   cat("control label: ", x$control_label, "\n")
   cat("\n")

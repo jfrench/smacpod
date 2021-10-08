@@ -25,20 +25,17 @@ package with marks for the case and control groups.
 \code{x$marks} is assumed to be a factor.  Automatic 
 conversion is attempted if it is not.}
 
-\item{case}{The position of the name of the "case" group 
-in \code{levels(x$marks)}.  The default is 2.  
-\code{x$marks} is assumed to be a factor.  Automatic
-conversion is attempted if it is not. Alternatively, you can select the
-name of the desired case group.}
+\item{case}{The name of the desired "case" group in \code{levels(x$marks)}.
+Alternatively, the position of the name of the "case" group in
+\code{levels(x$marks)}.  Since we don't know the group names, the default
+is 2, the second position of \code{levels(x$marks)}. \code{x$marks} is
+assumed to be a factor.  Automatic conversion is attempted if it is not.}
 
-\item{nsim}{An non-negative integer.  Default is 0.  The
-difference in estimated K functions will be calculated
-for \code{nsim} data sets generated under the random
-labeling hypothesis.  These will be used to construct
-the non-rejection envelopes.}
+\item{nsim}{The number of simulated data sets from which to construct
+tolerance envelopes under the random labeling hypothesis.  The default is 0
+(i.e., no envelopes).}
 
-\item{level}{The level used for the non-rejection envelopes. 
-Ignored if \code{nsim} is 0.}
+\item{level}{The level of the tolerance envelopes.}
 
 \item{r}{
     Optional. Vector of values for the argument \eqn{r} at which \eqn{K(r)} 
@@ -70,9 +67,10 @@ Ignored if \code{nsim} is 0.}
     border correction will be computed (by default), using a fast algorithm.
   }
 
-\item{domain}{Optional. Calculations will be restricted
-to this subset of the window. See Details of
-\code{\link[spatstat.core]{Kest}}.}
+\item{domain}{
+    Optional. Calculations will be restricted to this subset
+    of the window. See Details.
+  }
 
 \item{var.approx}{Logical. If \code{TRUE}, the approximate
     variance of \eqn{\hat K(r)}{Kest(r)} under CSR
@@ -91,24 +89,26 @@ Returns a \code{kdenv} object.  See documentation
   for \code{spatstat::Kest}.
 }
 \description{
-\code{kdest} determines the difference in estimated K
-functions for a set of cases and controls.  Non-rejection
-envelopes can also be produced.
+\code{kdest} computes the difference in estimated K functions for a set of
+cases and controls, with, \code{KD(r) = K_case(r) - K_control(r)} denoting
+the estimated difference at distance \code{r}.
+If \code{nsim > 0}, then pointwise tolerance envelopes for \code{KD(r)}
+are constructed under the random labeling hypothesis for each distance \code{r}.
 }
 \details{
-This function relies internally on the 
-\code{\link[spatstat.core]{Kest}} and 
-\code{\link[spatstat.core]{eval.fv}} functions from the 
-\code{spatstat} package.  The arguments are essentially
-the same as the \code{\link[spatstat.core]{Kest}} function, 
-and the user is referred there for more details about
-the various arguments.
+This function relies internally on the \code{\link[spatstat.core]{Kest}} and
+\code{\link[spatstat.core]{eval.fv}} functions from the \code{spatstat}
+package.  The arguments are essentially the same as the
+\code{\link[spatstat.core]{Kest}} function, and the user is referred there
+for more details about the various arguments.
 }
 \examples{
 data(grave)
 kd1 = kdest(grave, case = "affected")
 plot(kd1, iso ~ r, ylab = "difference", legend = FALSE, main = "")
 kd2 = kdest(grave, case = 2, nsim = 9, level = 0.8)
+kd2 # print object
+summary(kd2) # summarize distances KD(r) outside envelopes
 plot(kd2)
 }
 \references{
