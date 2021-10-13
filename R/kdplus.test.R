@@ -16,7 +16,9 @@
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005).
 #'   Applied Spatial Statistics for Public Health Data.
-#'   Hoboken, NJ: Wiley.  Diggle, Peter J., and Amanda G.
+#'   Hoboken, NJ: Wiley.  
+#'   
+#'   Diggle, Peter J., and Amanda G.
 #'   Chetwynd. "Second-order analysis of spatial clustering
 #'   for inhomogeneous populations." Biometrics (1991):
 #'   1155-1163.

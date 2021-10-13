@@ -17,6 +17,7 @@ Depends:
 Imports:
     spatstat.geom, spatstat.core, smerc, plotrix, abind, pbapply, sp
 Suggests: 
-    testthat
+    testthat, knitr, rmarkdown
+VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 Encoding: UTF-8
