@@ -4,10 +4,16 @@
 \alias{clusters.spscan}
 \title{Extract clusters}
 \usage{
-clusters.spscan(x, idx = seq_along(x$clusters), ...)
+\method{clusters}{spscan}(x, idx = seq_along(x$clusters), ...)
 }
 \arguments{
 \item{x}{An object of class \code{spscan} from the \code{\link{spscan.test}}}
+
+\item{idx}{An index vector indicating the elements of
+\code{x$clusters} to print information for. The default
+is all clusters.}
+
+\item{...}{Currently unimplemented}
 }
 \value{
 A list. Each element of the list is a vector with the indices of event
