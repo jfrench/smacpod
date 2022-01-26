@@ -204,7 +204,7 @@ summary(scan)
 plot(scan, chars = c(1, 20), main = "most likely cluster for grave data",
      border = "orange")
 # extract most likely and other significant clusters
-# clusters(scan)
+clusters(scan)
 ```
 
 ## Q nearest neigbors
