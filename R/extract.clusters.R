@@ -11,9 +11,10 @@
 #' out = spscan.test(grave, nsim = 99)
 #' # print scan object
 #' clusters(out)
-clusters = function(x) {
-  if (!is.element("spscan", class(x))) {
-    stop("x must have spscan class")
+#' @export
+clusters.spscan = function(x, idx = seq_along(x$clusters), ...) {
+  if (min(idx) < 1 | max(idx) > length(x$clusters)) {
+    stop("invalid idx values")
   }
-  smerc::lget(x$clusters, "locids")
+  lget(x$clusters[idx], "locids")
 }
