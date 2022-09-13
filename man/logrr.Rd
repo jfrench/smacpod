@@ -12,6 +12,7 @@ logrr(
   nsim = 0,
   level = 0.9,
   alternative = "two.sided",
+  envelope = "pixelwise",
   ...,
   bwargs = list(),
   weights = NULL,
@@ -24,14 +25,14 @@ logrr(
   kernel = "gaussian",
   scalekernel = is.character(kernel),
   positive = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  return_sims = FALSE
 )
 }
 \arguments{
-\item{x}{A \code{\link[spatstat.geom]{ppp}} object 
-package with marks for the case and control groups.
-\code{x$marks} is assumed to be a factor.  Automatic 
-conversion is attempted if it is not.}
+\item{x}{A \code{\link[spatstat.geom]{ppp}} object package with marks for the
+case and control groups. \code{x$marks} is assumed to be a factor.
+Automatic conversion is attempted if it is not.}
 
 \item{sigma}{Standard deviation of isotropic smoothing kernel for cases.
 Either a numerical value, or a function that computes an appropriate value
@@ -56,6 +57,10 @@ tolerance envelopes under the random labeling hypothesis.  The default is 0
 \item{alternative}{The type of envelopes to construct.  The default is
 \code{"two.sided"} (upper and lower envelopes).  The values \code{"less"}
 (lower envelope) and \code{"greater"} (upper envelope) are also valid.}
+
+\item{envelope}{The type of envelope to construct. The default is
+\code{"pixelwise"}. The other option is \code{"simulataneous"}, which
+controls the tolerance level across the entire study area.}
 
 \item{...}{
     Additional arguments passed to \code{\link{pixellate.ppp}}
@@ -131,6 +136,10 @@ tolerance envelopes under the random labeling hypothesis.  The default is 0
     Logical value indicating whether to issue warnings
     about numerical problems and conditions.
   }
+
+\item{return_sims}{A logical value indicating whether parts of the simulated
+data shoudl be returned. The default is \code{FALSE}. This is mostly used
+for debugging purposes.}
 }
 \value{
 The function produces an object of type \code{logrrenv}.  Its

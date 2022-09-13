@@ -20,10 +20,9 @@ kdest(
 )
 }
 \arguments{
-\item{x}{A \code{\link[spatstat.geom]{ppp}} object 
-package with marks for the case and control groups.
-\code{x$marks} is assumed to be a factor.  Automatic 
-conversion is attempted if it is not.}
+\item{x}{A \code{\link[spatstat.geom]{ppp}} object package with marks for the
+case and control groups. \code{x$marks} is assumed to be a factor.
+Automatic conversion is attempted if it is not.}
 
 \item{case}{The name of the desired "case" group in \code{levels(x$marks)}.
 Alternatively, the position of the name of the "case" group in

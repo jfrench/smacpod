@@ -35,11 +35,10 @@
 #' If the estimated density of the case or control group becomes too small, this
 #' function may produce warnings due to numerical underflow. Increasing the
 #' bandwidth (\code{sigma}) may help.
-#' 
-#' @param x A \code{\link[spatstat.geom]{ppp}} object 
-#'   package with marks for the case and control groups.
-#'   \code{x$marks} is assumed to be a factor.  Automatic 
-#'   conversion is attempted if it is not.
+#'
+#' @param x A \code{\link[spatstat.geom]{ppp}} object package with marks for the
+#'   case and control groups. \code{x$marks} is assumed to be a factor.
+#'   Automatic conversion is attempted if it is not.
 #' @inheritParams spatstat.core::density.ppp
 #' @param sigma Standard deviation of isotropic smoothing kernel for cases.
 #'   Either a numerical value, or a function that computes an appropriate value
@@ -59,8 +58,14 @@
 #' @param alternative The type of envelopes to construct.  The default is
 #'   \code{"two.sided"} (upper and lower envelopes).  The values \code{"less"}
 #'   (lower envelope) and \code{"greater"} (upper envelope) are also valid.
+#' @param envelope The type of envelope to construct. The default is
+#'   \code{"pixelwise"}. The other option is \code{"simulataneous"}, which
+#'   controls the tolerance level across the entire study area.
 #' @param bwargs A list of arguments for the bandwidth function supplied to
 #'   \code{sigma} and \code{sigmacon}, if applicable.
+#' @param return_sims A logical value indicating whether parts of the simulated
+#'   data shoudl be returned. The default is \code{FALSE}. This is mostly used
+#'   for debugging purposes.
 #'
 #' @return The function produces an object of type \code{logrrenv}.  Its
 #'   components are similar to those returned by the \code{density.ppp} function
@@ -101,20 +106,23 @@
 #' grad = gradient.color.scale(min(renv$v, na.rm = TRUE), max(renv$v, na.rm = TRUE))
 #' plot(renv, col = grad$col, breaks = grad$breaks, conlist = list(col = "lightgrey"))
 logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2, 
-                 nsim = 0, level = 0.90, alternative = "two.sided", ..., 
+                 nsim = 0, level = 0.90, alternative = "two.sided", 
+                 envelope = "pixelwise",
+                 ..., 
                  bwargs = list(), weights = NULL, edge = TRUE, 
                  varcov = NULL, at = "pixels", leaveoneout = TRUE, 
                  adjust = 1, diggle = FALSE, 
                  kernel = "gaussian",
                  scalekernel = is.character(kernel),
-                 positive = FALSE, verbose = TRUE) {
+                 positive = FALSE, verbose = TRUE, return_sims = FALSE) {
   # check argument validity
   x = arg_check_ppp_marks(x)
   case = arg_check_case(case, x)
   arg_check_nsim(nsim)
   arg_check_level(level)
   arg_check_alternative(alternative)
-
+  arg_check_envelope(envelope)
+  arg_check_return_sims(return_sims)
   
   alpha = 1 - level
 
@@ -160,42 +168,111 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
   r$nrenv = NULL
   
   if (nsim > 0) {
-    simr2 <- pbapply::pblapply(seq_len(nsim), function(i) {
-      cases = sample(x$n, N1)
-      fsim = spdensity(x = x[cases,], sigma = sigma, ..., 
-                       weights = weights[cases],
-                       edge = edge, varcov = varcov, at = at, 
-                       leaveoneout = leaveoneout,
-                       adjust = adjust, diggle = diggle,
-                       kernel = kernel, 
-                       scalekernel = scalekernel,
-                       positive = positive, verbose = verbose)
+    simr2 <- logrr_sim(nsim = nsim, sigma = sigma, sigmacon = sigmacon,
+                       x = x, N1 = N1, 
+                       level = level, alternative = alternative,
+                       envelope = envelope, ..., 
+                       bwargs = bwargs, weights = weights,
+                       edge = edge,
+                       varcov = varcov, at = at, leaveoneout = leaveoneout,
+                       adjust = adjust, diggle = diggle, kernel = kernel,
+                       scalekernel = scalekernel, positive = positive,
+                       verbose = verbose, return_sims = return_sims)
+    # extract different information from simr2_all
+    # simr_cases = smerc::lget(simr2_all, "cases")
+    # simr_fsim = smerc::lget(simr2_all, "fsim")
+    # simr_gsim = smerc::lget(simr2_all, "gsim")
+    # simr2 <- smerc::lget(simr2_all, "r")
+    # reorder results
+    # simr2[[nsim + 1]] <- simr2[[1]]
+    # change 1st position to original results
+    # simr2[[1]] <- r$v
+    # simr2 <- abind::abind(simr2, along = 3)
+    # r$simr = simr2
+    # create array with observed data in first position
+    r$simr = abind::abind(append(list(r$v), smerc::lget(simr2, "r")), along = 3)
+    # r$simr[[nsim + 1]] = r$simr[[1]]
+    # r$simr[[1]] = r$v
+    # only needed if return_sim is TRUE
+    if (return_sims) {
+      r$simr_cases = smerc::lget(simr2, "cases")
+      r$simr_fsim = smerc::lget(simr2, "fsim")
+      r$simr_gsim = smerc::lget(simr2, "gsim")
+    }
       
-      gsim = spdensity(x = x[-cases,], sigma = sigmacon, ..., 
-                       weights = weights[-cases],
-                       edge = edge, varcov = varcov, at = at, 
-                       leaveoneout = leaveoneout,
-                       adjust = adjust, diggle = diggle,
-                       kernel = kernel, 
-                       scalekernel = scalekernel,
-                       positive = positive, verbose = verbose)
-      
-      log(fsim$v) - log(gsim$v)
-    })
-    simr2[[nsim + 1]] <- simr2[[1]]
-    simr2[[1]] <- r$v
-    simr2 <- abind::abind(simr2, along = 3)
-    
-    r$simr = simr2
-    r$nrenv = nrenv(r, level = level, alternative = alternative)
-    r$case_label = levels(x$marks)[case]
-    r$control_label = levels(x$marks)[-case]
-    r$nsim = nsim
-    r$level = level
+    #add envelope function reference based on envelope choice
+    # if (envelope == "pointwise") {
+    #   temp_nrenv = nrenv1(r, level = level, alternative = alternative)
+    # } else if (envelope == "simultaneous") {
+    #   temp_nrenv = nrenv2(r, level = level, alternative = alternative)
+    # }
+    temp_nrenv = nrenv(r,
+                       level = level,
+                       alternative = alternative,
+                       envelope = envelope)
+    r$nrenv = temp_nrenv$im
+    if (return_sims) {
+      r$temp_nrenv = temp_nrenv
+    }
     class(r) = c("logrrenv", class(r))
   }
   
+  # add details
   r$window = x$window
+  r$envelope = envelope
+  r$case_label = levels(x$marks)[case]
+  r$control_label = levels(x$marks)[-case]
+  r$nsim = nsim
+  r$level = level
+  
   return(r)
 }
 
+# function that selects new cases based on the RLH
+# estimates the spatial density of the cases and controls
+# and returns the logrr (and other info if returnsims = TRUE)
+logrr_sim = function(nsim, sigma, sigmacon, x, N1,  
+                     level, alternative, 
+                     envelope,
+                     ..., 
+                     bwargs, weights,
+                     edge, 
+                     varcov, at, leaveoneout, 
+                     adjust, diggle, 
+                     kernel,
+                     scalekernel,
+                     positive, verbose, return_sims) {
+  out = pbapply::pblapply(seq_len(nsim), function(i) {
+    cases = sample(x$n, N1)
+    fsim = spdensity(x = x[cases,], sigma = sigma, ..., 
+                     weights = weights[cases],
+                     edge = edge, varcov = varcov, at = at, 
+                     leaveoneout = leaveoneout,
+                     adjust = adjust, diggle = diggle,
+                     kernel = kernel, 
+                     scalekernel = scalekernel,
+                     positive = positive, verbose = verbose)
+    
+    gsim = spdensity(x = x[-cases,], sigma = sigmacon, ..., 
+                     weights = weights[-cases],
+                     edge = edge, varcov = varcov, at = at, 
+                     leaveoneout = leaveoneout,
+                     adjust = adjust, diggle = diggle,
+                     kernel = kernel, 
+                     scalekernel = scalekernel,
+                     positive = positive, verbose = verbose)
+    
+    if(return_sims) {
+      return(list(cases = cases,
+                  fsim = fsim,
+                  gsim = gsim,
+                  r = log(fsim$v) - log(gsim$v)))
+    } else {
+      return(list(r = log(fsim$v) - log(gsim$v)))
+    }
+  })
+}
+
+reformat_simr2 = function(simr2, v, return_sims) {
+  
+}
