@@ -178,41 +178,24 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
                        adjust = adjust, diggle = diggle, kernel = kernel,
                        scalekernel = scalekernel, positive = positive,
                        verbose = verbose, return_sims = return_sims)
-    # extract different information from simr2_all
-    # simr_cases = smerc::lget(simr2_all, "cases")
-    # simr_fsim = smerc::lget(simr2_all, "fsim")
-    # simr_gsim = smerc::lget(simr2_all, "gsim")
-    # simr2 <- smerc::lget(simr2_all, "r")
-    # reorder results
-    # simr2[[nsim + 1]] <- simr2[[1]]
-    # change 1st position to original results
-    # simr2[[1]] <- r$v
-    # simr2 <- abind::abind(simr2, along = 3)
-    # r$simr = simr2
-    # create array with observed data in first position
     r$simr = abind::abind(append(list(r$v), smerc::lget(simr2, "r")), along = 3)
-    # r$simr[[nsim + 1]] = r$simr[[1]]
-    # r$simr[[1]] = r$v
     # only needed if return_sim is TRUE
     if (return_sims) {
       r$simr_cases = smerc::lget(simr2, "cases")
       r$simr_fsim = smerc::lget(simr2, "fsim")
       r$simr_gsim = smerc::lget(simr2, "gsim")
-    }
-      
-    #add envelope function reference based on envelope choice
-    # if (envelope == "pointwise") {
-    #   temp_nrenv = nrenv1(r, level = level, alternative = alternative)
-    # } else if (envelope == "simultaneous") {
-    #   temp_nrenv = nrenv2(r, level = level, alternative = alternative)
-    # }
-    temp_nrenv = nrenv(r,
-                       level = level,
-                       alternative = alternative,
-                       envelope = envelope)
-    r$nrenv = temp_nrenv$im
-    if (return_sims) {
-      r$temp_nrenv = temp_nrenv
+      r$temp_nrenv = nrenv(r,
+                         level = level,
+                         alternative = alternative,
+                         envelope = envelope,
+                         return_sims = return_sims)
+      r$nrenv = r$temp_nrenv$im
+    } else {
+      r$nrenv = nrenv(r,
+                      level = level,
+                      alternative = alternative,
+                      envelope = envelope,
+                      return_sims = return_sims)
     }
     class(r) = c("logrrenv", class(r))
   }
@@ -271,8 +254,4 @@ logrr_sim = function(nsim, sigma, sigmacon, x, N1,
       return(list(r = log(fsim$v) - log(gsim$v)))
     }
   })
-}
-
-reformat_simr2 = function(simr2, v, return_sims) {
-  
 }

@@ -31,6 +31,7 @@
 # @param alternative Default is "two.sided".  Can also be
 #   "greater" or "lower".
 # @param envelope The type of envelope to construct. Either "pixelwise" or "simultaneous".
+# @param return_sims Whether additional information should be provided
 #
 # @return Returns a \code{link[spatstat.geom]{im}} object
 #   representing a two-dimensional pixel image.
@@ -38,8 +39,11 @@
 # @references Waller, L.A. and Gotway, C.A. (2005).  Applied
 #   Spatial Statistics for Public Health Data.  Hoboken, NJ:
 #   Wiley.
-nrenv = function(object, level = 0.90, alternative = "two.sided",
-                 envelope = "pixelwise") {
+nrenv = function(object,
+                 level = 0.90,
+                 alternative = "two.sided",
+                 envelope = "pixelwise",
+                 return_sims = FALSE) {
   alpha = 1 - level
   alternative = match.arg(alternative, choices = c("two.sided", "lower", "upper"))
   if(envelope == "pixelwise") {
@@ -88,11 +92,17 @@ nrenv = function(object, level = 0.90, alternative = "two.sided",
   # unite indicator
   both = above + below
   # return results
-  return(
-    list(im = spatstat.geom::im(mat = both,
-                                xcol = object$xcol,
-                                yrow = object$yrow),
-         hi = tol[2,,],
-         low = tol[1,,])
-  )
+  if(return_sims) {
+    return(
+      list(im = spatstat.geom::im(mat = both,
+                                  xcol = object$xcol,
+                                  yrow = object$yrow),
+           hi = tol[2,,],
+           low = tol[1,,])
+      )
+  } else {
+    spatstat.geom::im(mat = both,
+                      xcol = object$xcol,
+                      yrow = object$yrow)
+  }
 }
