@@ -59,7 +59,7 @@ assumed to be a factor.  Automatic conversion is attempted if it is not.}
 
 \item{domain}{Optional. Calculations will be restricted 
 to this subset of the window. See Details of 
-\code{\link[spatstat.core]{Kest}}.}
+\code{\link[spatstat.explore]{Kest}}.}
 
 \item{var.approx}{Logical. If \code{TRUE}, the approximate
     variance of \eqn{\hat K(r)}{Kest(r)} under CSR
@@ -75,7 +75,7 @@ to this subset of the window. See Details of
 }
 \value{
 Returns an \code{fv} object.  See documentation 
-  for \code{spatstat.core::Kest}.
+  for \code{spatstat.explore::Kest}.
 }
 \description{
 \code{kd} determines the difference in estimated K 
@@ -83,10 +83,10 @@ functions for a set of cases and controls.
 }
 \details{
 This function relies internally on the 
-\code{\link[spatstat.core]{Kest}} and 
-\code{\link[spatstat.core]{eval.fv}} functions from the 
-\code{spatstat.core} package.  The arguments are essentially
-the same as the \code{\link[spatstat.core]{Kest}} function, 
+\code{\link[spatstat.explore]{Kest}} and 
+\code{\link[spatstat.explore]{eval.fv}} functions from the 
+\code{spatstat.explore} package.  The arguments are essentially
+the same as the \code{\link[spatstat.explore]{Kest}} function, 
 and the user is referred there for more details about
 the various arguments.
 }
@@ -101,8 +101,8 @@ Waller, L.A. and Gotway, C.A. (2005). Applied
   Wiley.
 }
 \seealso{
-\code{\link[spatstat.core]{Kest}}, 
-  \code{\link[spatstat.core]{eval.fv}}
+\code{\link[spatstat.explore]{Kest}}, 
+  \code{\link[spatstat.explore]{eval.fv}}
 }
 \author{
 Joshua French

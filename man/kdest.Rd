@@ -100,10 +100,10 @@ envelopes of \code{KD(r)} simulated under the random labeling hypothesis, and
 the average KD(r) under the random labeling hypothesis.
 }
 \details{
-This function relies internally on the \code{\link[spatstat.core]{Kest}} and
-\code{\link[spatstat.core]{eval.fv}} functions from the \code{spatstat}
+This function relies internally on the \code{\link[spatstat.explore]{Kest}} and
+\code{\link[spatstat.explore]{eval.fv}} functions from the \code{spatstat}
 package.  The arguments are essentially the same as the
-\code{\link[spatstat.core]{Kest}} function, and the user is referred there
+\code{\link[spatstat.explore]{Kest}} function, and the user is referred there
 for more details about the various arguments.
 }
 \examples{
@@ -126,8 +126,8 @@ Waller, L.A. and Gotway, C.A. (2005).
   Hoboken, NJ: Wiley.
 }
 \seealso{
-\code{\link[spatstat.core]{Kest}},
-  \code{\link[spatstat.core]{eval.fv}}
+\code{\link[spatstat.explore]{Kest}},
+  \code{\link[spatstat.explore]{eval.fv}}
 }
 \author{
 Joshua French

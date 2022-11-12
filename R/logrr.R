@@ -39,11 +39,11 @@
 #' @param x A \code{\link[spatstat.geom]{ppp}} object package with marks for the
 #'   case and control groups. \code{x$marks} is assumed to be a factor.
 #'   Automatic conversion is attempted if it is not.
-#' @inheritParams spatstat.core::density.ppp
+#' @inheritParams spatstat.explore::density.ppp
 #' @param sigma Standard deviation of isotropic smoothing kernel for cases.
 #'   Either a numerical value, or a function that computes an appropriate value
 #'   of \code{sigma}. If not specified, then
-#'   \code{\link[spatstat.core]{bw.relrisk}} is used.
+#'   \code{\link[spatstat.explore]{bw.relrisk}} is used.
 #' @param sigmacon Standard deviation of isotropic smoothing kernel for
 #'   controls.  Default is the same as \code{sigma}.
 #' @param case The name of the desired "case" group in \code{levels(x$marks)}.
@@ -69,7 +69,7 @@
 #'
 #' @return The function produces an object of type \code{logrrenv}.  Its
 #'   components are similar to those returned by the \code{density.ppp} function
-#'   from the \code{spatstat.core} package, with the intensity values replaced
+#'   from the \code{spatstat.explore} package, with the intensity values replaced
 #'   by the log ratio of spatial densities of f and g.  Includes an array
 #'   \code{simr} of dimension c(nx, ny, nsim + 1), where nx and ny are the
 #'   number of x and y grid points used to estimate the spatial density.
@@ -78,7 +78,7 @@
 #'   array are the log ratios of spatial densities from a new ppp simulated
 #'   under the random labeling hypothesis.
 #' @author Joshua French (and a small chunk by the authors of the
-#'   \code{\link[spatstat.core]{density.ppp}}) function for consistency with the
+#'   \code{\link[spatstat.explore]{density.ppp}}) function for consistency with the
 #'   default behavior of that function).
 #' @export
 #' @references Waller, L.A. and Gotway, C.A. (2005). Applied Spatial Statistics
@@ -96,7 +96,7 @@
 #' r = logrr(grave, case = "affected")
 #' plot(r)
 #' # use scott's bandwidth
-#' r2 = logrr(grave, case = 2, sigma = spatstat.core::bw.scott)
+#' r2 = logrr(grave, case = 2, sigma = spatstat.explore::bw.scott)
 #' plot(r2)
 #' # construct pointwise tolerance envelopes for log relative risk
 #' renv = logrr(grave, nsim = 9)
@@ -135,12 +135,12 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
       sigma = do.call(sigma, list(X = x))
     }
   }
-  if (is.null(sigma)) { # use spatstat.core::bw.relrisk if nothing given
-    which_bwargs <- names(bwargs) %in% names(formals(spatstat.core::bw.relrisk))[-1]
+  if (is.null(sigma)) { # use spatstat.explore::bw.relrisk if nothing given
+    which_bwargs <- names(bwargs) %in% names(formals(spatstat.explore::bw.relrisk))[-1]
     if (length(which_bwargs) > 0 ) {
-      sigma = do.call(spatstat.core::bw.relrisk, c(list(X = x, bwargs[which_bwargs])))
+      sigma = do.call(spatstat.explore::bw.relrisk, c(list(X = x, bwargs[which_bwargs])))
     } else {
-      sigma = do.call(spatstat.core::bw.relrisk, list(X = x))
+      sigma = do.call(spatstat.explore::bw.relrisk, list(X = x))
     }
   }
   if (is.null(sigmacon)) sigmacon = sigma # determine sigmacon, if NULL
