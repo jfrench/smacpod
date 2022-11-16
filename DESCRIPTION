@@ -15,7 +15,7 @@ LazyLoad: yes
 Depends:
     R (>= 3.1.1)
 Imports:
-    spatstat.geom, spatstat.random, spatstat.core, smerc, plotrix, abind, pbapply, sp
+    spatstat.geom, spatstat.random, spatstat.explore, smerc, plotrix, abind, pbapply, sp
 Suggests: 
     testthat, knitr, rmarkdown
 VignetteBuilder: knitr
