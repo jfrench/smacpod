@@ -91,12 +91,15 @@ spscan.test <-
     idxcase = which(x$marks == levels(x$marks)[case])
     N = x$n
     N1 = length(idxcase)
-    coords = matrix(c(x$x, x$y), ncol = 2)
-
-    d = smerc::gedist(cbind(x$x, x$y), longlat = longlat)
     
+    # get coordinates
+    coords = matrix(c(x$x, x$y), ncol = 2)
+    # compute distance matrix
+    d = smerc::gedist(cbind(x$x, x$y), longlat = longlat)
+    # set maxd if needed    
     if (is.null(maxd)) maxd = max(d)/2
     
+    # compute nearest neighbor list
     mynn = nn(d, k = maxd, method = "d", self = TRUE)
 
     # determine the number of events inside the windows for successive
@@ -117,7 +120,7 @@ spscan.test <-
     # calculate scan statistics for observed data
     z = numeric(N)
     z[idxcase] = 1
-    # N1in = unlist(lapply(mynn, function(x) cumsum(z[x])))
+
     tobs = 
       spscan.stat(
         N = N,
@@ -126,9 +129,10 @@ spscan.test <-
         Nout = Nout,
         N1in = smerc::nn.cumsum(mynn, z), 
         const = const)
-    tobs_nn <- split(tobs, f = fac)
+    
     # determine non-overlapping windows in decreasing
     # order of test statistic
+    tobs_nn <- split(tobs, f = fac)
     noc_info <- smerc::noc_nn(mynn, tobs_nn)
     tobs <- noc_info$tobs
     
@@ -264,17 +268,15 @@ create_spscan = function(tobs, pvalue, alpha, noc_info,
   # population in window, standarized mortality ratio, relative risk,
   sig_tstat = tobs[usigc]
   sig_p = pvalue[usigc]
-  # sig_r = diag(SpatialTools::dist2(sig_coords, coords[max_nn[usigc], , drop = FALSE]))
   sig_clusts = noc_info$clusts[usigc]
-  start_region = unlist(lapply(sig_clusts, head, n = 1), use.names = FALSE)
-  end_region = unlist(lapply(sig_clusts, tail, n = 1), use.names = FALSE)
+  start_region = unlist(lapply(sig_clusts, utils::head, n = 1),
+                        use.names = FALSE)
+  end_region = unlist(lapply(sig_clusts, utils::tail, n = 1),
+                      use.names = FALSE)
   sig_coords = coords[start_region,, drop = FALSE]
   
   sig_r = d[cbind(start_region, end_region)]
-  # sig_r = smerc::gedist(sig_coords, coords[max_nn[usigc], , drop = FALSE], longlat = longlat)#, diagonal = TRUE)
-  # sig_popin = (Nin[tmax_idx])[usigc]
   sig_popin = sapply(sig_clusts, length)
-  # sig_yin = (N1in[tmax_idx])[usigc]
   sig_yin = smerc::zones.sum(sig_clusts, z)
   sig_ein = (N1/N)*sig_popin
   sig_smr = sig_yin/sig_ein
