@@ -51,7 +51,7 @@ is \code{FALSE}, i.e., Euclidean distance.}
 }
 \value{
 Returns a list of length two of class 
-  \code{scan}. The first element (clusters) is a list 
+  \code{spscan}. The first element (clusters) is a list 
   containing the significant, non-overlapping clusters, 
   and has the the following components: 
   \item{coords}{The

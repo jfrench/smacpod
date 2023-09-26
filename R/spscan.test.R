@@ -26,7 +26,7 @@
 #' @inheritParams qnn.test
 #'   
 #' @return Returns a list of length two of class 
-#'   \code{scan}. The first element (clusters) is a list 
+#'   \code{spscan}. The first element (clusters) is a list 
 #'   containing the significant, non-overlapping clusters, 
 #'   and has the the following components: 
 #'   \item{coords}{The
@@ -133,17 +133,21 @@ spscan.test <-
     tobs <- noc_info$tobs
     
     if (nsim > 0) {
-      tsim = spscan.sim(nsim = nsim, N = N, N1 = N1,
+      tsim = spscan.sim(nsim = nsim, nnlist = mynn,
+                        N = N, N1 = N1,
                         Nin = Nin, Nout = Nout,
                         const = const, cl = cl)
-      pvalue = mc.pvalue(tobs, tsim)
+      pvalue = smerc::mc.pvalue(tobs, tsim)
     } else {
       pvalue = rep(1, length(tobs))
     }
 
     create_spscan(tobs = tobs,
                   pvalue = pvalue,
-                  alpha = alpha, N = N, N1 = N1,
+                  alpha = alpha, 
+                  noc_info = noc_info,
+                  coords = coords, z = z,
+                  N = N, N1 = N1,
                   x = x, d = d, maxd = maxd,
                   longlat = longlat,
                   nsim = nsim)
@@ -194,10 +198,12 @@ spscan.stat <- function(N, N1, Nin, Nout, N1in, const) {
 #'
 #' @inheritParams spscan.test
 #' @inheritParams spscan.stat
+#' @param nnlist A list of nearest neighbors from the
+#'   \code{nn} function.
 #' @return A vector of maximum test statistics
 #' @export
 #' @keywords internal
-spscan.sim = function(nsim, N, N1, Nin, Nout, const, cl) {
+spscan.sim = function(nsim, nnlist, N, N1, Nin, Nout, const, cl) {
   # determine whether to parallelize results
   pbapply::pbvapply(seq_len(nsim), function(i) {
   
@@ -212,7 +218,7 @@ spscan.sim = function(nsim, N, N1, Nin, Nout, const, cl) {
       N1 = N1,
       Nin = Nin,
       Nout = Nout,
-      N1in = smerc::nn.cumsum(mynn, z), 
+      N1in = smerc::nn.cumsum(nnlist, z), 
       const = const)
   
   # return max of statistics for simulation
@@ -224,14 +230,21 @@ spscan.sim = function(nsim, N, N1, Nin, Nout, const, cl) {
 #'
 #' @inheritParams spscan.test
 #' @inheritParams spscan.stat
-#' @param tobs The vector of observed test statistics in descending order for non-overlapping windows.
+#' @param noc_info An object from the
+#'   \code{\link[smerc]{noc_nn}} function.
+#' @param z An indicator vector indicating which
+#'   observations are cases.
+#' @param tobs The vector of observed test statistics in
+#'   descending order for non-overlapping windows.
 #' @param pvalue The pvalues associated with \code{tobs}.
-#' @param d A matrix of intercentroid distances for the event locations.
+#' @param d A matrix of intercentroid distances for the
+#'   event locations.
 #'
 #' @return An \code{spscan} object.
 #' @export
 #' @keywords internal
-create_spscan = function(tobs, pvalue, alpha, 
+create_spscan = function(tobs, pvalue, alpha, noc_info,
+                         coords, z,
                          N, N1, 
                          x, d, maxd,
                          longlat, 

@@ -4,11 +4,14 @@
 \alias{spscan.sim}
 \title{Compute spatial scan statistics for simulated data}
 \usage{
-spscan.sim(nsim, N, N1, Nin, Nout, const, cl)
+spscan.sim(nsim, nnlist, N, N1, Nin, Nout, const, cl)
 }
 \arguments{
 \item{nsim}{The number of simulations from which to compute the p-value.  A
 non-negative integer.  Default is 499.}
+
+\item{nnlist}{A list of nearest neighbors from the
+\code{nn} function.}
 
 \item{N}{Number of event locations}
 
