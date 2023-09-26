@@ -109,7 +109,7 @@ plot(out, chars = c(1, 20), main = "most likely cluster")
 # each element of the list gives the location index of the events in each cluster
 clusters(out)
 # get warning if no significant cluster
-out2 = spscan.test(grave, case = 2, alpha = 0.001, nsim = 99)
+out2 = spscan.test(grave, case = 2, alpha = 0.001, nsim = 0)
 }
 \references{
 Kulldorff M., Nagarwalla N. (1995) Spatial
