@@ -1,7 +1,7 @@
 Package: smacpod
 Type: Package
 Title: Statistical Methods for the Analysis of Case-Control Point Data
-Version: 2.6.1
+Version: 2.6.4
 Authors@R: 
     person(given = "Joshua",
            family = "French",
@@ -19,5 +19,5 @@ Imports:
 Suggests: 
     testthat, knitr, rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Encoding: UTF-8
